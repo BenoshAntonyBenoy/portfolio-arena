@@ -66,6 +66,158 @@ body {
     radial-gradient(40% 40% at 80% 20%, rgba(216, 168, 114, 0.05) 0%, transparent 70%);
 }
 
+/* ------------------------------------------------------------------ */
+/* Glass + gold 3D badge (B logo)                                     */
+/* ------------------------------------------------------------------ */
+.logo-badge {
+  position: relative;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  font-family: var(--font-display);
+  color: #2a1d0c;
+  background: linear-gradient(150deg, #f7dca6 0%, #e3b87b 38%, #c8924f 64%, #9a6c33 100%);
+  box-shadow:
+    0 3px 8px rgba(0, 0, 0, 0.45),
+    0 1px 0 rgba(255, 255, 255, 0.25),
+    inset 0 1px 1px rgba(255, 255, 255, 0.7),
+    inset 0 -3px 5px rgba(120, 80, 30, 0.55);
+  transform-style: preserve-3d;
+  transition: box-shadow 0.4s ease;
+}
+.logo-badge::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(155deg, rgba(255, 255, 255, 0.65) 0%, transparent 42%);
+  pointer-events: none;
+}
+.group:hover .logo-badge {
+  animation: badgeSpin 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  box-shadow:
+    0 6px 18px rgba(216, 168, 114, 0.4),
+    inset 0 1px 1px rgba(255, 255, 255, 0.8),
+    inset 0 -3px 5px rgba(120, 80, 30, 0.55);
+}
+@keyframes badgeSpin {
+  to {
+    transform: rotateY(360deg);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Hero ambient depth — slow gradient blobs + light sweep            */
+/* ------------------------------------------------------------------ */
+.hero-blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(70px);
+  opacity: 0.5;
+  pointer-events: none;
+  will-change: transform;
+}
+.hero-blob--gold {
+  background: radial-gradient(circle, rgba(216, 168, 114, 0.5), transparent 70%);
+  animation: blobDrift 22s ease-in-out infinite;
+}
+.hero-blob--cool {
+  background: radial-gradient(circle, rgba(120, 132, 196, 0.32), transparent 70%);
+  animation: blobDrift 28s ease-in-out infinite reverse;
+}
+@keyframes blobDrift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  33% {
+    transform: translate3d(36px, -28px, 0) scale(1.12);
+  }
+  66% {
+    transform: translate3d(-26px, 22px, 0) scale(0.94);
+  }
+}
+.hero-sweep {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, 0.05) 48%, transparent 66%);
+  background-size: 250% 250%;
+  animation: lightSweep 14s linear infinite;
+}
+@keyframes lightSweep {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 200% 200%;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Floating glass chips                                                */
+/* ------------------------------------------------------------------ */
+.glass-chip {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+.floaty {
+  animation: floaty 6s ease-in-out infinite;
+}
+.floaty-delay {
+  animation-delay: -3s;
+}
+@keyframes floaty {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Tilt + glow helpers for cards                                       */
+/* ------------------------------------------------------------------ */
+.tilt-scene {
+  perspective: 1000px;
+}
+
+/* ------------------------------------------------------------------ */
+/* Lightweight CSS 3D cube monogram                                    */
+/* ------------------------------------------------------------------ */
+.cube-scene {
+  perspective: 800px;
+  pointer-events: none;
+}
+.cube {
+  position: relative;
+  transform-style: preserve-3d;
+  animation: cubeSpin 18s linear infinite;
+}
+.cube__face {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(216, 168, 114, 0.4);
+  background: rgba(216, 168, 114, 0.04);
+  font-family: var(--font-display);
+  color: rgba(216, 168, 114, 0.55);
+}
+@keyframes cubeSpin {
+  0% {
+    transform: rotateX(-22deg) rotateY(0deg);
+  }
+  100% {
+    transform: rotateX(-22deg) rotateY(360deg);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -76,6 +228,12 @@ body {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
+  }
+  .hero-blob,
+  .hero-sweep,
+  .floaty,
+  .cube {
+    animation: none !important;
   }
 }
 

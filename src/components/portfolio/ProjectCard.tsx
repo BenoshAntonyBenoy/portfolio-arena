@@ -1,4 +1,5 @@
 import type { Project } from "../../content/portfolioConfig";
+import { TiltCard } from "../ui/TiltCard";
 
 function ArrowIcon() {
   return (
@@ -32,7 +33,8 @@ function GeneratedCover({ project }: { project: Project }) {
 
 export function ProjectCard({ project }: { project: Project }) {
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-3xl border border-line bg-surface/40 transition-all duration-300 hover:-translate-y-1 hover:border-accent/40">
+    <TiltCard max={6} lift={8} className="h-full">
+      <article className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-line bg-surface/40 transition-[border-color,box-shadow] duration-300 hover:border-accent/40 hover:shadow-[0_0_0_1px_rgba(216,168,114,0.35),0_24px_55px_-30px_rgba(216,168,114,0.3),0_34px_70px_-32px_rgba(0,0,0,0.9)]">
       <div className="relative aspect-[16/10] overflow-hidden border-b border-line bg-ink">
         {project.image ? (
           <img
@@ -92,6 +94,7 @@ export function ProjectCard({ project }: { project: Project }) {
           </div>
         )}
       </div>
-    </article>
+      </article>
+    </TiltCard>
   );
 }

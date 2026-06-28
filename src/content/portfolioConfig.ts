@@ -45,6 +45,8 @@ export type Achievement = {
 export type PortfolioConfig = {
   meta: {
     name: string;
+    /** Full legal name — used ONLY in the navbar beside the logo. */
+    fullName: string;
     role: string;
     tagline: string;
     location: string;
@@ -63,6 +65,8 @@ export type PortfolioConfig = {
     primaryCta: NavItem;
     secondaryCta: NavItem;
     stats: Stat[];
+    /** Small glass chips that float around the hero photo. */
+    floatingTags: string[];
   };
   about: {
     eyebrow: string;
@@ -98,6 +102,7 @@ export type PortfolioConfig = {
 export const portfolioConfig: PortfolioConfig = {
   meta: {
     name: "Benosh Benoy",
+    fullName: "Benosh Antony Benoy",
     role: "Developer · Designer · Strategist",
     tagline: "Building at the intersection of code, AI, and design.",
     location: "Kerala, India",
@@ -134,13 +139,14 @@ export const portfolioConfig: PortfolioConfig = {
       { value: "5+", label: "Shipped projects" },
       { value: "2+ yrs", label: "Markets experience" },
     ],
+    floatingTags: ["AI", "Next.js", "Design", "Builder"],
   },
 
   about: {
     eyebrow: "Who's behind the pixels?",
     title: "I build things that think.",
     paragraphs: [
-      "I'm Benosh Benoy, a Computer Science student at Mar Baselios College of Engineering and Technology, building at the intersection of code, design, and AI.",
+      "I am Benosh Antony Benoy, a computer science student building AI tools, web apps, and clean digital interfaces.",
       "I live where engineering meets aesthetics — writing code that works and interfaces that feel right. From Python tools to AI experiments to UI case studies, I care about the craft end to end.",
       "Code as craft. Design as language. Strategy as the thread between them. I think about products strategically, not just visually — and I have a soft spot for ideas that earn their complexity.",
     ],

@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import type { PortfolioConfig } from "../../content/portfolioConfig";
 import { useActiveSection } from "../../hooks/useActiveSection";
 import { cn } from "../../utils/cn";
+import { Logo } from "../ui/Logo";
 
 type NavbarProps = {
   meta: PortfolioConfig["meta"];
@@ -45,15 +46,7 @@ export function Navbar({ meta, nav }: NavbarProps) {
         aria-label="Primary"
         className="mx-auto flex h-16 w-full max-w-[1200px] items-center justify-between px-5 md:h-20 md:px-8"
       >
-        <a
-          href="#top"
-          className="group flex items-center gap-2 text-sm font-semibold tracking-tight text-cream"
-        >
-          <span className="grid h-8 w-8 place-items-center rounded-lg bg-accent font-display text-base text-ink transition-transform group-hover:-rotate-6">
-            B
-          </span>
-          <span className="hidden sm:inline">{meta.name}</span>
-        </a>
+        <Logo name={meta.fullName} className="[&>span:nth-child(2)]:hidden sm:[&>span:nth-child(2)]:inline" />
 
         <ul className="hidden items-center gap-1 md:flex">
           {nav.map((item) => {
