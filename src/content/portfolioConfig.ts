@@ -124,6 +124,8 @@ export const portfolioConfig: PortfolioConfig = {
     { label: "GitHub", handle: "@BenoshAntonyBenoy", href: "https://github.com/BenoshAntonyBenoy" },
     { label: "LinkedIn", handle: "in/benoshbenoy", href: "https://www.linkedin.com/in/benoshbenoy" },
     { label: "Email", handle: "benosh.benoy2@gmail.com", href: "mailto:benosh.benoy2@gmail.com" },
+    // Discord usernames have no public profile URL — render as labeled text (empty href).
+    { label: "Discord", handle: "_benosh", href: "" },
   ],
 
   hero: {

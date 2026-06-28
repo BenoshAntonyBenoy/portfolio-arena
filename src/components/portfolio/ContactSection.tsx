@@ -48,18 +48,29 @@ export function ContactSection({ contact, meta, socials }: ContactSectionProps) 
             © {year} {meta.name}. {contact.footerNote}.
           </p>
           <ul className="flex flex-wrap items-center justify-center gap-6">
-            {socials.map((social) => (
-              <li key={social.label}>
-                <a
-                  href={social.href}
-                  target={social.href.startsWith("http") ? "_blank" : undefined}
-                  rel={social.href.startsWith("http") ? "noreferrer" : undefined}
-                  className="text-sm font-medium text-muted transition-colors hover:text-cream"
-                >
-                  {social.label}
-                </a>
-              </li>
-            ))}
+            {socials.map((social) =>
+              social.href ? (
+                <li key={social.label}>
+                  <a
+                    href={social.href}
+                    target={social.href.startsWith("http") ? "_blank" : undefined}
+                    rel={social.href.startsWith("http") ? "noreferrer" : undefined}
+                    className="text-sm font-medium text-muted transition-colors hover:text-cream"
+                  >
+                    {social.label}
+                  </a>
+                </li>
+              ) : (
+                <li key={social.label}>
+                  <span
+                    className="text-sm font-medium text-muted"
+                    aria-label={`${social.label}: ${social.handle}`}
+                  >
+                    {social.label} <span className="text-cream/80">{social.handle}</span>
+                  </span>
+                </li>
+              ),
+            )}
           </ul>
         </div>
       </footer>
