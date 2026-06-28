@@ -1,0 +1,102 @@
+@import url("https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap");
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------ */
+/* Design tokens — single accent, warm-neutral premium dark palette.  */
+/* ------------------------------------------------------------------ */
+@theme {
+  --color-ink: #0a0a0c;
+  --color-surface: #131318;
+  --color-surface-2: #1a1a21;
+  --color-cream: #ece8e4;
+  --color-muted: #8d8a85;
+  --color-line: #26262d;
+  --color-accent: #d8a872;
+  --color-accent-soft: #e9c79b;
+
+  --font-display: "Anton", "Impact", sans-serif;
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100%;
+}
+
+html {
+  scroll-behavior: smooth;
+  /* Offset anchored scrolling so sticky nav never covers section tops. */
+  scroll-padding-top: 96px;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  background: var(--color-ink);
+  color: var(--color-cream);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.font-display {
+  font-family: var(--font-display);
+  font-weight: 400;
+}
+
+/* Visible, on-brand focus ring for keyboard users. */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Subtle, static grain/grid backdrop — no animated glow blobs. */
+.surface-grid {
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.018) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+/* Quiet radial vignette behind the hero — replaces the old glow animation. */
+.hero-veil {
+  background:
+    radial-gradient(60% 50% at 50% 0%, rgba(216, 168, 114, 0.08) 0%, transparent 70%),
+    radial-gradient(40% 40% at 80% 20%, rgba(216, 168, 114, 0.05) 0%, transparent 70%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-ink);
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: #34343c;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #45454f;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-ink);
+}
