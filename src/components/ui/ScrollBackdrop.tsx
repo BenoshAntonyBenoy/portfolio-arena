@@ -67,8 +67,8 @@ export function ScrollBackdrop() {
       ctx!.clearRect(0, 0, width, height);
 
       // --- central glow: grows + brightens with scroll ---
-      const coreR = Math.min(width, height) * (0.12 + p * 0.55);
-      const coreA = 0.035 + p * 0.2;
+      const coreR = Math.min(width, height) * (0.14 + p * 0.55);
+      const coreA = 0.06 + p * 0.22;
       const glow = ctx!.createRadialGradient(cx, cy, 0, cx, cy, coreR);
       glow.addColorStop(0, `rgba(${ACCENT},${coreA})`);
       glow.addColorStop(0.6, `rgba(${ACCENT},${coreA * 0.35})`);
@@ -94,8 +94,8 @@ export function ScrollBackdrop() {
       });
 
       // --- proximity lines ---
-      const maxDist = 124;
-      const lineMax = 0.05 + p * 0.4;
+      const maxDist = 130;
+      const lineMax = 0.09 + p * 0.4;
       ctx!.lineWidth = 0.6;
       for (let i = 0; i < pts.length; i++) {
         for (let j = i + 1; j < pts.length; j++) {
@@ -113,7 +113,7 @@ export function ScrollBackdrop() {
       }
 
       // --- nodes (bubbles) ---
-      const nodeA = 0.18 + p * 0.55;
+      const nodeA = 0.28 + p * 0.5;
       ctx!.fillStyle = `rgba(${ACCENT},${nodeA})`;
       for (const pt of pts) {
         ctx!.beginPath();

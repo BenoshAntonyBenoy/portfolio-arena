@@ -23,12 +23,14 @@ body,
 #root {
   width: 100%;
   min-height: 100%;
-  /* Paint the dark base on every root layer so no white can ever show through
-     during scroll compositing or overscroll. */
-  background-color: var(--color-ink);
 }
 
 html {
+  /* Dark base lives on <html> only. As the root backdrop it paints BEHIND the
+     fixed -z-10 canvas and the -z-10 cube, so those stay visible — while still
+     guaranteeing no white can show through during scroll (it never relies on
+     body-background propagation). body/#root stay transparent on purpose. */
+  background-color: var(--color-ink);
   scroll-behavior: smooth;
   /* Offset anchored scrolling so sticky nav never covers section tops. */
   scroll-padding-top: 96px;
