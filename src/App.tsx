@@ -6,6 +6,7 @@ import { HeroSection } from "./components/portfolio/HeroSection";
 import { Navbar } from "./components/portfolio/Navbar";
 import { ProjectsSection } from "./components/portfolio/ProjectsSection";
 import { SkillsSection } from "./components/portfolio/SkillsSection";
+import { ScrollBackdrop } from "./components/ui/ScrollBackdrop";
 import { portfolioConfig } from "./content/portfolioConfig";
 import { usePrefersReducedMotion } from "./hooks/usePrefersReducedMotion";
 
@@ -21,6 +22,8 @@ export default function App() {
       >
         Skip to content
       </a>
+
+      <ScrollBackdrop />
 
       <Navbar meta={c.meta} nav={c.nav} />
 

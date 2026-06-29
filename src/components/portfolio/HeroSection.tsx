@@ -1,5 +1,7 @@
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useMotionTemplate, useScroll, useTransform } from "framer-motion";
 import type { PortfolioConfig } from "../../content/portfolioConfig";
+import { usePrefersReducedMotion } from "../../hooks/usePrefersReducedMotion";
 import { Cube3D } from "../ui/Cube3D";
 import { TiltCard } from "../ui/TiltCard";
 
@@ -21,8 +23,21 @@ const chipPositions = [
 ];
 
 export function HeroSection({ hero, meta }: HeroSectionProps) {
+  const reduced = usePrefersReducedMotion();
+  const sectionRef = useRef<HTMLElement>(null);
+
+  // Parallax zoom: as the hero scrolls away, its content scales up, fades, and
+  // softly blurs — so scrolling into the About section feels like a zoom-through.
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end start"] });
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.18]);
+  const opacity = useTransform(scrollYProgress, [0, 0.85], [1, 0]);
+  const blur = useTransform(scrollYProgress, [0, 1], [0, 5]);
+  const filter = useMotionTemplate`blur(${blur}px)`;
+  const zoomStyle = reduced ? undefined : { scale, opacity, filter };
+
   return (
     <section
+      ref={sectionRef}
       id="top"
       className="hero-veil relative overflow-hidden px-5 pb-14 pt-24 md:px-8 md:pb-20 md:pt-28"
       aria-label="Introduction"
@@ -34,7 +49,10 @@ export function HeroSection({ hero, meta }: HeroSectionProps) {
       <div className="hero-sweep -z-10" aria-hidden="true" />
       <Cube3D size={108} className="absolute right-[6%] top-[14%] -z-10 hidden opacity-70 lg:block" />
 
-      <div className="mx-auto grid w-full max-w-[1200px] items-center gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:gap-14">
+      <motion.div
+        style={zoomStyle}
+        className="mx-auto grid w-full max-w-[1200px] origin-center items-center gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:gap-14"
+      >
         {/* ---- Text column: the name is the anchor ---- */}
         <div className="order-2 lg:order-1">
           <motion.span
@@ -169,7 +187,7 @@ export function HeroSection({ hero, meta }: HeroSectionProps) {
             ))}
           </TiltCard>
         </motion.div>
-      </div>
+      </motion.div>
     </section>
   );
 }
