@@ -44,11 +44,16 @@ export function ScrollBackdrop() {
 
     function resize() {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      // The canvas is sized by CSS (fixed inset-0), so its client box is the
-      // viewport. Fall back to window/doc dims if the client box isn't ready.
-      width = canvas!.clientWidth || window.innerWidth || document.documentElement.clientWidth;
-      height = canvas!.clientHeight || window.innerHeight || document.documentElement.clientHeight;
+      // Drive size from the viewport (window/doc), NOT the canvas's own client
+      // box. A <canvas> is a replaced element, so reading its size back to set
+      // its size creates a ResizeObserver feedback loop that explodes the buffer.
+      width = window.innerWidth || document.documentElement.clientWidth;
+      height = window.innerHeight || document.documentElement.clientHeight;
       if (!width || !height) return;
+      // Explicit CSS size pins the layout box to the viewport (a replaced
+      // element would otherwise lay out at its intrinsic buffer size).
+      canvas!.style.width = `${width}px`;
+      canvas!.style.height = `${height}px`;
       canvas!.width = Math.floor(width * dpr);
       canvas!.height = Math.floor(height * dpr);
       ctx!.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -141,9 +146,11 @@ export function ScrollBackdrop() {
 
     resize();
     readScroll();
-    // ResizeObserver self-heals if the viewport size wasn't ready at mount.
+    // Observe the document element (a stable viewport proxy) to self-heal if
+    // the size wasn't ready at mount. Never observe the canvas itself — that
+    // would feed its own size back into the resize and loop.
     const ro = new ResizeObserver(() => resize());
-    ro.observe(canvas);
+    ro.observe(document.documentElement);
     window.addEventListener("resize", resize);
     window.addEventListener("scroll", readScroll, { passive: true });
     window.addEventListener("pointermove", onMove, { passive: true });
