@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { motion, useMotionTemplate, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import type { PortfolioConfig } from "../../content/portfolioConfig";
 import { usePrefersReducedMotion } from "../../hooks/usePrefersReducedMotion";
 import { Cube3D } from "../ui/Cube3D";
@@ -26,14 +26,14 @@ export function HeroSection({ hero, meta }: HeroSectionProps) {
   const reduced = usePrefersReducedMotion();
   const sectionRef = useRef<HTMLElement>(null);
 
-  // Parallax zoom: as the hero scrolls away, its content scales up, fades, and
-  // softly blurs — so scrolling into the About section feels like a zoom-through.
+  // Parallax zoom: as the hero scrolls away, its content scales up and fades —
+  // so scrolling into the About section feels like a zoom-through. (No CSS blur
+  // filter here: blurring this layer over the fixed canvas caused white repaint
+  // flashes during scroll on some GPUs.)
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end start"] });
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.18]);
-  const opacity = useTransform(scrollYProgress, [0, 0.85], [1, 0]);
-  const blur = useTransform(scrollYProgress, [0, 1], [0, 5]);
-  const filter = useMotionTemplate`blur(${blur}px)`;
-  const zoomStyle = reduced ? undefined : { scale, opacity, filter };
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.12]);
+  const opacity = useTransform(scrollYProgress, [0, 0.75], [1, 0]);
+  const zoomStyle = reduced ? undefined : { scale, opacity };
 
   return (
     <section

@@ -23,18 +23,21 @@ body,
 #root {
   width: 100%;
   min-height: 100%;
+  /* Paint the dark base on every root layer so no white can ever show through
+     during scroll compositing or overscroll. */
+  background-color: var(--color-ink);
 }
 
 html {
   scroll-behavior: smooth;
   /* Offset anchored scrolling so sticky nav never covers section tops. */
   scroll-padding-top: 96px;
+  overscroll-behavior: none;
 }
 
 body {
   margin: 0;
   font-family: var(--font-sans);
-  background: var(--color-ink);
   color: var(--color-cream);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
