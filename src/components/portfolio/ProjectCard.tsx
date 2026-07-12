@@ -20,47 +20,59 @@ function GithubIcon() {
 type ProjectCardProps = {
   project: Project;
   featured?: boolean;
+  reverse?: boolean;
 };
 
-export function ProjectCard({ project, featured = false }: ProjectCardProps) {
+export function ProjectCard({ project, featured = false, reverse = false }: ProjectCardProps) {
   const imageFit = project.image.fit ?? "cover";
-  const sizes = featured
-    ? "(min-width: 1024px) 62vw, 100vw"
-    : "(min-width: 1280px) 33vw, (min-width: 768px) 50vw, 100vw";
 
   return (
     <article
       className={cn(
-        "group relative h-full overflow-hidden rounded-3xl border border-line bg-surface/45 transition-[border-color,box-shadow,transform] duration-300 hover:-translate-y-1 hover:border-accent/40 hover:shadow-[0_0_0_1px_rgba(216,168,114,0.26),0_28px_60px_-34px_rgba(216,168,114,0.36),0_34px_70px_-32px_rgba(0,0,0,0.9)]",
-        featured && "lg:grid lg:grid-cols-[1.3fr_0.7fr]",
+        "group relative overflow-hidden rounded-[32px] border border-line bg-[linear-gradient(135deg,rgba(19,19,24,0.94),rgba(10,10,12,0.88))] transition-[border-color,box-shadow,transform] duration-300 hover:-translate-y-1 hover:border-accent/45 hover:shadow-[0_0_0_1px_rgba(216,168,114,0.24),0_34px_75px_-38px_rgba(216,168,114,0.42),0_42px_90px_-40px_rgba(0,0,0,0.95)] lg:grid",
+        reverse ? "lg:grid-cols-[0.85fr_1.15fr]" : "lg:grid-cols-[1.15fr_0.85fr]",
       )}
     >
       <div
         className={cn(
-          "relative overflow-hidden border-b border-line bg-[#0d1016]",
-          featured ? "aspect-[16/10] lg:aspect-auto lg:min-h-[520px] lg:border-b-0 lg:border-r" : "aspect-[16/10]",
+          "relative aspect-[16/10] overflow-hidden border-b border-line bg-[#030706] lg:aspect-auto lg:min-h-[500px] lg:border-b-0",
+          featured && "lg:min-h-[560px]",
+          reverse ? "lg:order-2 lg:border-l" : "lg:order-1 lg:border-r",
         )}
       >
         <img
           src={project.image.src}
           srcSet={project.image.srcSet}
-          sizes={sizes}
+          sizes="(min-width: 1024px) 58vw, 100vw"
           alt={project.image.alt}
           loading="lazy"
           decoding="async"
           className={cn(
-            "h-full w-full transition-transform duration-500 group-hover:scale-[1.025]",
-            imageFit === "contain" ? "object-contain" : "object-cover",
+            "absolute inset-0 h-full w-full transition-transform duration-700",
+            imageFit === "contain" ? "object-contain" : "object-cover group-hover:scale-[1.035]",
           )}
           style={{ objectPosition: project.image.position ?? "top" }}
         />
-        <span className="absolute left-4 top-4 rounded-full border border-white/10 bg-ink/75 px-3 py-1 font-display text-xs tracking-widest text-cream backdrop-blur-sm">
+        <div
+          className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/25 via-transparent to-white/[0.025]"
+          aria-hidden="true"
+        />
+        <span className="absolute left-5 top-5 rounded-full border border-white/10 bg-ink/80 px-3.5 py-1.5 font-display text-xs tracking-widest text-cream backdrop-blur-sm">
           {project.index}
         </span>
       </div>
 
-      <div className={cn("flex min-w-0 flex-col p-6 md:p-7", featured && "justify-center lg:p-10")}>
-        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-semibold uppercase tracking-[0.16em] text-accent">
+      <div
+        className={cn(
+          "relative flex min-w-0 flex-col justify-center p-7 md:p-9 lg:p-10 xl:p-12",
+          reverse ? "lg:order-1" : "lg:order-2",
+        )}
+      >
+        <div
+          className="pointer-events-none absolute -right-24 -top-24 h-56 w-56 rounded-full bg-accent/[0.06] blur-3xl"
+          aria-hidden="true"
+        />
+        <div className="relative flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-semibold uppercase tracking-[0.16em] text-accent">
           <span>{project.kicker}</span>
           <span className="h-1 w-1 rounded-full bg-muted" aria-hidden="true" />
           <span className="text-muted">{project.year}</span>
@@ -68,19 +80,19 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
 
         <h3
           className={cn(
-            "mt-4 font-display uppercase leading-[0.95] tracking-tight text-cream",
-            featured ? "text-4xl md:text-5xl" : "text-2xl md:text-3xl",
+            "relative mt-4 font-display uppercase leading-[0.95] tracking-tight text-cream",
+            featured ? "text-4xl md:text-5xl" : "text-3xl md:text-4xl",
           )}
         >
           {project.name}
         </h3>
-        <p className={cn("mt-4 font-medium leading-relaxed text-cream/90", featured ? "text-xl" : "text-lg")}>
+        <p className={cn("relative mt-5 font-medium leading-relaxed text-cream/90", featured ? "text-xl" : "text-lg")}>
           {project.summary}
         </p>
-        <p className="mt-3 text-sm leading-relaxed text-muted md:text-base">{project.description}</p>
+        <p className="relative mt-3 text-sm leading-relaxed text-muted md:text-base">{project.description}</p>
 
         {project.highlights && (
-          <ul className="mt-6 space-y-3 border-l border-accent/35 pl-4">
+          <ul className="relative mt-6 space-y-3 border-l border-accent/35 pl-4">
             {project.highlights.map((highlight) => (
               <li key={highlight} className="text-sm leading-relaxed text-cream/75">
                 {highlight}
@@ -89,11 +101,11 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
           </ul>
         )}
 
-        <ul className="mt-6 flex flex-wrap gap-2">
+        <ul className="relative mt-6 flex flex-wrap gap-2">
           {project.tech.map((tool) => (
             <li
               key={tool}
-              className="rounded-md border border-line bg-ink/40 px-2.5 py-1 text-[0.68rem] font-medium uppercase tracking-wider text-cream/70"
+              className="rounded-md border border-line bg-ink/45 px-2.5 py-1 text-[0.68rem] font-medium uppercase tracking-wider text-cream/70"
             >
               {tool}
             </li>
@@ -101,7 +113,7 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
         </ul>
 
         {(project.liveUrl || project.githubUrl) && (
-          <div className="mt-7 flex flex-wrap items-center gap-3 border-t border-line pt-5">
+          <div className="relative mt-7 flex flex-wrap items-center gap-3 border-t border-line pt-5">
             {project.liveUrl && (
               <a
                 href={project.liveUrl}

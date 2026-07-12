@@ -134,9 +134,9 @@ export const portfolioConfig: PortfolioConfig = {
   },
 
   nav: [
-    { label: "Work", href: "#projects" },
     { label: "About", href: "#about" },
     { label: "Skills", href: "#skills" },
+    { label: "Work", href: "#projects" },
     { label: "Highlights", href: "#beyond" },
     { label: "Contact", href: "#contact" },
   ],
@@ -226,6 +226,8 @@ export const portfolioConfig: PortfolioConfig = {
           src: "/projects/bquick-1255.webp",
           srcSet: "/projects/bquick-640.webp 640w, /projects/bquick-1255.webp 1255w",
           alt: "BQuick code-mode typing session with live line, speed, and accuracy statistics",
+          fit: "contain",
+          position: "center",
         },
         featured: true,
         highlights: [
@@ -293,8 +295,8 @@ export const portfolioConfig: PortfolioConfig = {
         image: {
           src: "/projects/gpay-redesign-440.webp",
           alt: "Dark Google Pay mobile splash-screen concept with a yellow wallet symbol",
-          fit: "contain",
-          position: "center",
+          fit: "cover",
+          position: "center 48%",
         },
       },
       {
@@ -310,8 +312,8 @@ export const portfolioConfig: PortfolioConfig = {
           src: "/projects/retail-demand-916.webp",
           srcSet: "/projects/retail-demand-640.webp 640w, /projects/retail-demand-916.webp 916w",
           alt: "Jupyter notebook showing a retail demand prediction and submission-validation pipeline",
-          fit: "contain",
-          position: "top",
+          fit: "cover",
+          position: "center 30%",
         },
       },
     ],

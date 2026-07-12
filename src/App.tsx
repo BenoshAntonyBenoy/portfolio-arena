@@ -29,9 +29,9 @@ export default function App() {
 
       <main id="main" tabIndex={-1}>
         <HeroSection hero={c.hero} meta={c.meta} />
-        <ProjectsSection projects={c.projects} />
         <AboutSection about={c.about} meta={c.meta} />
         <SkillsSection skills={c.skills} />
+        <ProjectsSection projects={c.projects} />
         <AchievementsSection achievements={c.achievements} />
         <ContactSection contact={c.contact} meta={c.meta} socials={c.socials} />
       </main>

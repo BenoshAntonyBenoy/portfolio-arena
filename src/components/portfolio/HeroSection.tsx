@@ -1,5 +1,8 @@
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import type { PortfolioConfig } from "../../content/portfolioConfig";
+import { usePrefersReducedMotion } from "../../hooks/usePrefersReducedMotion";
+import { Cube3D } from "../ui/Cube3D";
 
 type HeroSectionProps = {
   hero: PortfolioConfig["hero"];
@@ -16,17 +19,28 @@ const chipPositions = [
 ];
 
 export function HeroSection({ hero, meta }: HeroSectionProps) {
+  const sectionRef = useRef<HTMLElement>(null);
+  const reducedMotion = usePrefersReducedMotion();
   const secondaryIsDocument = hero.secondaryCta.href.toLowerCase().endsWith(".pdf");
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end start"] });
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.18]);
+  const y = useTransform(scrollYProgress, [0, 1], [0, -52]);
+  const opacity = useTransform(scrollYProgress, [0, 0.72, 1], [1, 0.86, 0]);
+  const zoomStyle = reducedMotion ? undefined : { scale, y, opacity };
 
   return (
     <section
+      ref={sectionRef}
       id="top"
       className="hero-veil relative overflow-hidden px-5 pb-16 pt-24 md:px-8 md:pb-24 md:pt-28"
       aria-label="Introduction"
     >
       <div className="surface-grid pointer-events-none absolute inset-0 -z-10 opacity-45" aria-hidden="true" />
 
-      <div className="mx-auto grid w-full max-w-[1200px] items-center gap-12 lg:grid-cols-[1.12fr_0.88fr] lg:gap-16">
+      <motion.div
+        style={zoomStyle}
+        className="relative z-10 mx-auto grid w-full max-w-[1200px] origin-center items-center gap-12 lg:grid-cols-[1.12fr_0.88fr] lg:gap-16"
+      >
         <div className="order-1">
           <motion.span
             initial={{ opacity: 0, y: 12 }}
@@ -117,6 +131,7 @@ export function HeroSection({ hero, meta }: HeroSectionProps) {
           transition={{ duration: 0.7, ease, delay: 0.18 }}
           className="relative order-2 mx-auto w-full max-w-[300px] sm:max-w-[360px] lg:max-w-none"
         >
+          <Cube3D size={86} className="absolute -right-5 -top-5 z-30 hidden opacity-80 xl:block" />
           <div
             className="absolute -inset-4 -z-10 rounded-[34px] bg-gradient-to-br from-accent/20 via-accent/5 to-transparent blur-2xl"
             aria-hidden="true"
@@ -156,7 +171,7 @@ export function HeroSection({ hero, meta }: HeroSectionProps) {
             </span>
           ))}
         </motion.div>
-      </div>
+      </motion.div>
     </section>
   );
 }

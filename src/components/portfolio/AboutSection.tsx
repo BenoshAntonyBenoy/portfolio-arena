@@ -1,5 +1,6 @@
 import type { PortfolioConfig } from "../../content/portfolioConfig";
 import { Reveal } from "../ui/Reveal";
+import { SectionParallax } from "../ui/SectionParallax";
 
 type AboutSectionProps = {
   about: PortfolioConfig["about"];
@@ -13,7 +14,7 @@ export function AboutSection({ about, meta }: AboutSectionProps) {
       aria-labelledby="about-title"
       className="mx-auto w-full max-w-[1200px] scroll-mt-24 px-5 py-24 md:px-8 md:py-32"
     >
-      <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
+      <SectionParallax className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
         <div>
           <Reveal className="flex flex-col gap-4">
             <span className="flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.28em] text-accent">
@@ -60,7 +61,7 @@ export function AboutSection({ about, meta }: AboutSectionProps) {
             </Reveal>
           ))}
         </div>
-      </div>
+      </SectionParallax>
     </section>
   );
 }
