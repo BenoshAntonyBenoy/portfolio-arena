@@ -8,7 +8,8 @@ import { usePrefersReducedMotion } from "../../hooks/usePrefersReducedMotion";
  * expands and how bright everything gets, so the page literally lights up as
  * you descend. The cursor adds a subtle parallax. Lightweight: capped node
  * count, capped DPR, paused while the tab is hidden, single static frame under
- * prefers-reduced-motion.
+ * prefers-reduced-motion. The animated branch is capped at 30fps and uses a
+ * smaller field on coarse-pointer devices to protect mid-range mobile GPUs.
  */
 export function ScrollBackdrop() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -23,16 +24,22 @@ export function ScrollBackdrop() {
     const ACCENT = "216,168,114";
     let width = 0;
     let height = 0;
+    let pixelRatio = 0;
     let raf = 0;
+    let lastFrame = 0;
     let progress = 0; // smoothed
     let targetProgress = 0;
+    const coarsePointer = window.matchMedia("(pointer: coarse)").matches;
     const mouse = { x: 0.5, y: 0.5, active: false };
 
     type Node = { x: number; y: number; vx: number; vy: number; r: number };
     let nodes: Node[] = [];
 
     function seedNodes() {
-      const count = Math.max(28, Math.min(72, Math.floor((width * height) / 24000)));
+      const minimum = coarsePointer ? 18 : 24;
+      const maximum = coarsePointer ? 32 : 48;
+      const density = coarsePointer ? 48000 : 34000;
+      const count = Math.max(minimum, Math.min(maximum, Math.floor((width * height) / density)));
       nodes = Array.from({ length: count }, () => ({
         x: Math.random() * width,
         y: Math.random() * height,
@@ -47,9 +54,13 @@ export function ScrollBackdrop() {
       // Drive size from the viewport (window/doc), NOT the canvas's own client
       // box. A <canvas> is a replaced element, so reading its size back to set
       // its size creates a ResizeObserver feedback loop that explodes the buffer.
-      width = window.innerWidth || document.documentElement.clientWidth;
-      height = window.innerHeight || document.documentElement.clientHeight;
-      if (!width || !height) return;
+      const nextWidth = window.innerWidth || document.documentElement.clientWidth;
+      const nextHeight = window.innerHeight || document.documentElement.clientHeight;
+      if (!nextWidth || !nextHeight) return;
+      if (nextWidth === width && nextHeight === height && dpr === pixelRatio) return;
+      width = nextWidth;
+      height = nextHeight;
+      pixelRatio = dpr;
       // Explicit CSS size pins the layout box to the viewport (a replaced
       // element would otherwise lay out at its intrinsic buffer size).
       canvas!.style.width = `${width}px`;
@@ -100,14 +111,16 @@ export function ScrollBackdrop() {
 
       // --- proximity lines ---
       const maxDist = 130;
+      const maxDistSquared = maxDist * maxDist;
       const lineMax = 0.09 + p * 0.4;
       ctx!.lineWidth = 0.6;
       for (let i = 0; i < pts.length; i++) {
         for (let j = i + 1; j < pts.length; j++) {
           const dx = pts[i].x - pts[j].x;
           const dy = pts[i].y - pts[j].y;
-          const d = Math.hypot(dx, dy);
-          if (d < maxDist) {
+          const distanceSquared = dx * dx + dy * dy;
+          if (distanceSquared < maxDistSquared) {
+            const d = Math.sqrt(distanceSquared);
             ctx!.strokeStyle = `rgba(${ACCENT},${(1 - d / maxDist) * lineMax})`;
             ctx!.beginPath();
             ctx!.moveTo(pts[i].x, pts[i].y);
@@ -127,9 +140,12 @@ export function ScrollBackdrop() {
       }
     }
 
-    function loop() {
-      progress += (targetProgress - progress) * 0.06;
-      draw();
+    function loop(timestamp: number) {
+      if (timestamp - lastFrame >= 1000 / 30) {
+        progress += (targetProgress - progress) * 0.11;
+        draw();
+        lastFrame = timestamp;
+      }
       raf = requestAnimationFrame(loop);
     }
 
@@ -141,7 +157,10 @@ export function ScrollBackdrop() {
     const onLeave = () => (mouse.active = false);
     const onVisibility = () => {
       cancelAnimationFrame(raf);
-      if (!document.hidden && !reduced) raf = requestAnimationFrame(loop);
+      if (!document.hidden && !reduced) {
+        lastFrame = 0;
+        raf = requestAnimationFrame(loop);
+      }
     };
 
     resize();
@@ -153,8 +172,10 @@ export function ScrollBackdrop() {
     ro.observe(document.documentElement);
     window.addEventListener("resize", resize);
     window.addEventListener("scroll", readScroll, { passive: true });
-    window.addEventListener("pointermove", onMove, { passive: true });
-    window.addEventListener("pointerleave", onLeave);
+    if (!coarsePointer) {
+      window.addEventListener("pointermove", onMove, { passive: true });
+      window.addEventListener("pointerleave", onLeave);
+    }
     document.addEventListener("visibilitychange", onVisibility);
 
     if (reduced) {
@@ -171,8 +192,10 @@ export function ScrollBackdrop() {
       ro.disconnect();
       window.removeEventListener("resize", resize);
       window.removeEventListener("scroll", readScroll);
-      window.removeEventListener("pointermove", onMove);
-      window.removeEventListener("pointerleave", onLeave);
+      if (!coarsePointer) {
+        window.removeEventListener("pointermove", onMove);
+        window.removeEventListener("pointerleave", onLeave);
+      }
       document.removeEventListener("visibilitychange", onVisibility);
     };
   }, [reduced]);

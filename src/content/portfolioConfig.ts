@@ -1,6 +1,6 @@
 // ============================================================================
 // Single source of truth for every piece of editable content on the site.
-// Edit text, links, and images here — components stay presentation-only.
+// Edit text, links, and images here; components stay presentation-only.
 // ============================================================================
 
 export type NavItem = {
@@ -25,15 +25,34 @@ export type SkillGroup = {
   items: string[];
 };
 
+export type AboutFact = {
+  label: string;
+  value: string;
+};
+
+export type ProjectImage = {
+  src: string;
+  srcSet?: string;
+  alt: string;
+  fit?: "cover" | "contain";
+  position?: string;
+};
+
 export type Project = {
   index: string;
   name: string;
+  kicker: string;
+  year: string;
+  summary: string;
   description: string;
   tech: string[];
-  /** Optional preview image served from /public. Omit to render a generated cover. */
-  image?: string;
+  image: ProjectImage;
+  featured?: boolean;
+  highlights?: string[];
   liveUrl?: string;
+  liveLabel?: string;
   githubUrl?: string;
+  githubLabel?: string;
 };
 
 export type Achievement = {
@@ -45,7 +64,7 @@ export type Achievement = {
 export type PortfolioConfig = {
   meta: {
     name: string;
-    /** Full legal name — used ONLY in the navbar beside the logo. */
+    /** Full legal name - used only in the navbar beside the logo. */
     fullName: string;
     role: string;
     tagline: string;
@@ -56,6 +75,7 @@ export type PortfolioConfig = {
     siteUrl: string;
   };
   nav: NavItem[];
+  headerCta: NavItem;
   socials: SocialLink[];
   hero: {
     eyebrow: string;
@@ -65,7 +85,7 @@ export type PortfolioConfig = {
     primaryCta: NavItem;
     secondaryCta: NavItem;
     stats: Stat[];
-    /** Small glass chips that float around the hero photo. */
+    /** Small glass chips shown around the hero photo. */
     floatingTags: string[];
   };
   about: {
@@ -73,6 +93,7 @@ export type PortfolioConfig = {
     title: string;
     paragraphs: string[];
     signature: string;
+    facts: AboutFact[];
   };
   skills: {
     eyebrow: string;
@@ -103,8 +124,8 @@ export const portfolioConfig: PortfolioConfig = {
   meta: {
     name: "Benosh Benoy",
     fullName: "Benosh Antony Benoy",
-    role: "Developer · Designer · Strategist",
-    tagline: "Building at the intersection of code, AI, and design.",
+    role: "Software & AI Developer · UI/UX Designer",
+    tagline: "Building practical software, adaptive web tools, and thoughtful interfaces.",
     location: "Kerala, India",
     email: "benosh.benoy2@gmail.com",
     resumeUrl: "/resume.pdf",
@@ -113,160 +134,224 @@ export const portfolioConfig: PortfolioConfig = {
   },
 
   nav: [
+    { label: "Work", href: "#projects" },
     { label: "About", href: "#about" },
     { label: "Skills", href: "#skills" },
-    { label: "Projects", href: "#projects" },
-    { label: "Beyond", href: "#beyond" },
+    { label: "Highlights", href: "#beyond" },
     { label: "Contact", href: "#contact" },
   ],
+
+  headerCta: { label: "Résumé", href: "/resume.pdf" },
 
   socials: [
     { label: "GitHub", handle: "@BenoshAntonyBenoy", href: "https://github.com/BenoshAntonyBenoy" },
     { label: "LinkedIn", handle: "in/benoshbenoy", href: "https://www.linkedin.com/in/benoshbenoy" },
     { label: "Email", handle: "benosh.benoy2@gmail.com", href: "mailto:benosh.benoy2@gmail.com" },
-    // Discord usernames have no public profile URL — render as labeled text (empty href).
-    { label: "Discord", handle: "_benosh", href: "" },
   ],
 
   hero: {
-    eyebrow: "Available for collaborations",
+    eyebrow: "Open to software & product opportunities",
     nameLines: ["Benosh", "Benoy"],
     intro:
-      "Computer Science student building things that think. I live where engineering meets aesthetics — writing code that works and interfaces that feel right.",
-    availability: "Kerala, India",
-    primaryCta: { label: "View my work", href: "#projects" },
-    secondaryCta: { label: "Get in touch", href: "#contact" },
+      "Computer Science and Artificial Intelligence student building practical software - from adaptive browser tools and Python desktop apps to ML notebooks and UI prototypes.",
+    availability: "Kerala · Remote",
+    primaryCta: { label: "Explore my work", href: "#projects" },
+    secondaryCta: { label: "View résumé", href: "/resume.pdf" },
     stats: [
+      { value: "6", label: "Featured builds" },
       { value: "5+", label: "Hackathons" },
-      { value: "5+", label: "Shipped projects" },
-      { value: "2+ yrs", label: "Markets experience" },
+      { value: "1st", label: "College chess" },
     ],
-    floatingTags: ["AI", "Next.js", "Design", "Builder"],
+    floatingTags: ["Python", "JavaScript", "Machine Learning", "UI/UX"],
   },
 
   about: {
-    eyebrow: "Who's behind the pixels?",
-    title: "I build things that think.",
+    eyebrow: "Education, focus, and approach",
+    title: "Engineering with a designer's eye.",
     paragraphs: [
-      "I am Benosh Antony Benoy, a computer science student building AI tools, web apps, and clean digital interfaces.",
-      "I live where engineering meets aesthetics — writing code that works and interfaces that feel right. From Python tools to AI experiments to UI case studies, I care about the craft end to end.",
-      "Code as craft. Design as language. Strategy as the thread between them. I think about products strategically, not just visually — and I have a soft spot for ideas that earn their complexity.",
+      "I am Benosh Antony Benoy, a B.Tech Computer Science (Artificial Intelligence) student at Mar Baselios College of Engineering and Technology, Kerala.",
+      "I build practical products across the browser and desktop - from adaptive typing systems and data-rich Python interfaces to machine-learning workflows.",
+      "My strongest work starts with a clear problem, uses the simplest reliable tools, and treats usability as part of the engineering - not a finishing layer.",
     ],
-    signature: "Code as craft · Design as language · Strategy as the thread.",
+    signature: "Software engineering · AI/ML · Product design",
+    facts: [
+      { label: "Education", value: "B.Tech in Computer Science (Artificial Intelligence)" },
+      { label: "College", value: "Mar Baselios College of Engineering and Technology" },
+      { label: "Timeline", value: "2025 - Present" },
+      { label: "Focus", value: "Software, machine learning, and interface design" },
+    ],
   },
 
   skills: {
     eyebrow: "Skills & tools",
-    title: "The toolkit I reach for.",
+    title: "A focused, practical toolkit.",
     groups: [
       {
         title: "Languages",
-        caption: "Where the logic lives.",
-        items: ["Python", "C", "SQL"],
+        caption: "Core languages used across my projects.",
+        items: ["Python", "JavaScript", "TypeScript", "C", "SQL"],
+      },
+      {
+        title: "Web & Product",
+        caption: "Accessible interfaces and browser-based tools.",
+        items: ["React", "Vite", "HTML & CSS", "Browser APIs", "Responsive UI"],
       },
       {
         title: "AI / ML & Data",
-        caption: "Models, math, and meaning.",
-        items: ["scikit-learn", "Pandas", "NumPy", "Matplotlib", "Regression"],
+        caption: "From structured data to evaluated models.",
+        items: ["CatBoost", "scikit-learn", "Pandas", "NumPy", "Jupyter"],
       },
       {
-        title: "Design",
-        caption: "Interfaces that feel right.",
-        items: ["Figma", "UI Design", "Prototyping", "Video Editing"],
-      },
-      {
-        title: "Build & Craft",
-        caption: "Turning ideas into tools.",
-        items: ["Tkinter", "SQLite", "OOP", "Stock Analysis"],
+        title: "Design & Desktop",
+        caption: "Product thinking across prototypes and desktop apps.",
+        items: ["Figma", "UI/UX Design", "Prototyping", "Python Desktop UI", "Data Visualisation"],
       },
     ],
   },
 
   projects: {
-    eyebrow: "Featured projects",
-    title: "Selected work.",
+    eyebrow: "Six selected builds",
+    title: "Work with proof.",
     items: [
       {
         index: "01",
-        name: "Student Report Analyser",
+        name: "BQuick - Pro Typing Trainer",
+        kicker: "Adaptive Web App",
+        year: "2026",
+        summary: "Typing practice built around the transitions that slow you down.",
         description:
-          "A desktop tool that ingests student marksheets and turns them into clear, actionable performance insights — trends, weak areas, and printable summaries through a clean GUI.",
-        tech: ["Python", "Tkinter", "Pandas", "Matplotlib"],
-        image: "/projects/student-report.png",
-        githubUrl: "https://github.com/BenoshAntonyBenoy",
+          "An adaptive browser typing trainer that measures dwell and flight time for every keystroke, identifies weak key-to-key transitions, and turns them into focused drills.",
+        tech: ["JavaScript", "Browser APIs", "Adaptive Analytics"],
+        image: {
+          src: "/projects/bquick-1255.webp",
+          srcSet: "/projects/bquick-640.webp 640w, /projects/bquick-1255.webp 1255w",
+          alt: "BQuick code-mode typing session with live line, speed, and accuracy statistics",
+        },
+        featured: true,
+        highlights: [
+          "Practice, timed tests, and full-program typing for C, Java, and Python",
+          "Variance-weighted weak-transition ranking and adaptive drills",
+          "Progress, analytics, and sound preferences stored locally",
+        ],
+        liveUrl: "https://bquick.benosh.tech/",
+        liveLabel: "Try BQuick",
       },
       {
         index: "02",
-        name: "Game Store Management System",
+        name: "Student Report Analyser",
+        kicker: "Python Desktop Tool",
+        year: "2026",
+        summary: "Class performance, ranking, and subject-level insight in one focused interface.",
         description:
-          "An inventory and sales management system for a game store: stock tracking, billing, and customer records backed by a structured database layer.",
-        tech: ["Python", "SQLite", "OOP"],
-        githubUrl: "https://github.com/BenoshAntonyBenoy",
+          "A Python desktop application for reviewing student results through rank, totals, class averages, pass status, subject breakdowns, comparison charts, and radar views.",
+        tech: ["Python", "Desktop UI", "Data Visualisation"],
+        image: {
+          src: "/projects/student-report-1280.webp",
+          srcSet: "/projects/student-report-640.webp 640w, /projects/student-report-1280.webp 1280w",
+          alt: "Student report dashboard showing marks, class averages, a bar chart, and a radar chart",
+        },
       },
       {
         index: "03",
         name: "Personal Budget Tracker",
+        kicker: "Python Finance Tool",
+        year: "2026",
+        summary: "A clearer way to understand spending, limits, and purchase decisions.",
         description:
-          "A friendly budgeting app to log expenses, set category limits, and visualise where the money actually goes — with charts that make overspending obvious.",
-        tech: ["Python", "Matplotlib", "Data Viz"],
-        githubUrl: "https://github.com/BenoshAntonyBenoy",
+          "A Python desktop dashboard with income and expense summaries, budget alerts, recent transactions, category charts, and a purchase check that shows whether an item fits the remaining budget.",
+        tech: ["Python", "Desktop UI", "Data Visualisation"],
+        image: {
+          src: "/projects/budget-tracker-1280.webp",
+          srcSet: "/projects/budget-tracker-640.webp 640w, /projects/budget-tracker-1280.webp 1280w",
+          alt: "Personal Budget Tracker dashboard with financial summaries, expense chart, alerts, and purchase check",
+        },
       },
       {
         index: "04",
-        name: "Google Pay Mobile App Redesign",
+        name: "Game Store Management System",
+        kicker: "Python Desktop Program",
+        year: "2026",
+        summary: "A practical command centre for catalogue, stock, and daily sales.",
         description:
-          "An end-to-end UX case study reimagining the Google Pay flow — research, wireframes, and a polished high-fidelity prototype focused on clarity and trust.",
-        tech: ["Figma", "UX Research", "Prototyping"],
+          "A Python desktop program for managing a game-store catalogue and day-to-day sales, with an at-a-glance dashboard for inventory, low-stock items, and transaction activity.",
+        tech: ["Python", "Desktop UI", "Inventory"],
+        image: {
+          src: "/projects/game-store-1280.webp",
+          srcSet: "/projects/game-store-640.webp 640w, /projects/game-store-1280.webp 1280w",
+          alt: "Game Store Manager desktop dashboard with inventory, stock, and sales information",
+        },
       },
       {
         index: "05",
-        name: "ML Regression Models",
+        name: "Google Pay Mobile Redesign",
+        kicker: "Mobile UI Concept",
+        year: "2026",
+        summary: "A darker, wallet-first visual direction for a familiar payment experience.",
         description:
-          "A series of regression experiments predicting numerical outcomes across small datasets — exploring feature engineering, model selection, and evaluation metrics in practice.",
-        tech: ["Python", "scikit-learn", "NumPy", "Pandas"],
-        githubUrl: "https://github.com/BenoshAntonyBenoy",
+          "A Figma mobile redesign concept exploring a focused entry experience for Google Pay through a dark interface, simplified visual hierarchy, and a bold wallet motif.",
+        tech: ["Figma", "Mobile UI", "Prototyping"],
+        image: {
+          src: "/projects/gpay-redesign-440.webp",
+          alt: "Dark Google Pay mobile splash-screen concept with a yellow wallet symbol",
+          fit: "contain",
+          position: "center",
+        },
+      },
+      {
+        index: "06",
+        name: "Retail Demand Prediction",
+        kicker: "Machine Learning Notebook",
+        year: "2026",
+        summary: "A structured forecasting workflow from holdout evaluation to submission validation.",
+        description:
+          "A notebook-based demand-prediction pipeline using CatBoost, holdout evaluation, bounded predictions, and checks that validate column order, row count, indices, and export format.",
+        tech: ["Python", "CatBoost", "Pandas", "Jupyter"],
+        image: {
+          src: "/projects/retail-demand-916.webp",
+          srcSet: "/projects/retail-demand-640.webp 640w, /projects/retail-demand-916.webp 916w",
+          alt: "Jupyter notebook showing a retail demand prediction and submission-validation pipeline",
+          fit: "contain",
+          position: "top",
+        },
       },
     ],
   },
 
   achievements: {
-    eyebrow: "Strategy, on and off the board",
-    title: "Beyond the code.",
+    eyebrow: "Evidence beyond the project grid",
+    title: "Highlights that shaped me.",
     items: [
       {
         metric: "5+",
-        title: "Hackathons",
+        title: "Hackathons & build sprints",
         description:
-          "Built and pitched under pressure across 5+ hackathons — fast prototyping, tight teams, real deadlines.",
+          "Built and pitched under pressure across five-plus hackathons, including a GDGC MBCET vibe-coding event.",
       },
       {
         metric: "1st",
-        title: "Chess — MBCET",
-        description:
-          "First place at the college championship and third at the inter-college level. The board is where I practise strategy.",
+        title: "WormsWood Chess - MBCET",
+        description: "Won the college chess tournament through patient calculation, preparation, and composure.",
       },
       {
-        metric: "2+ yrs",
-        title: "Stock Markets",
-        description:
-          "Two-plus years reading markets — patience, risk, and reading second-order effects before they show up.",
+        metric: "3rd",
+        title: "A-Zone Chess Championship",
+        description: "Placed third while representing the MBCET college team at inter-college level.",
       },
       {
-        metric: "∞",
-        title: "Always Learning",
-        description:
-          "Continuously exploring AI and machine learning — the field moves fast, and so do I.",
+        metric: "2025→",
+        title: "B.Tech CSE (AI)",
+        description: "Studying Computer Science with an Artificial Intelligence specialization at MBCET.",
       },
     ],
   },
 
   contact: {
-    eyebrow: "Let's build something remarkable",
-    title: "Let's talk.",
+    eyebrow: "Open to useful, ambitious work",
+    title: "Let's build.",
     prompt:
-      "Got a question, a proposal, a project, or just want to build something together? My inbox is always open.",
-    emailLabel: "Send me an email",
-    resumeLabel: "Download résumé",
-    footerNote: "Designed & built by Benosh Benoy",
+      "If you are hiring for software, AI/ML, or product-focused opportunities - or have a project that needs careful engineering and design - I would like to hear from you.",
+    emailLabel: "Email me",
+    resumeLabel: "View résumé",
+    footerNote: "Built with care in Kerala",
   },
 };

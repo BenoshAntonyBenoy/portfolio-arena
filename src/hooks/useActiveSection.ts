@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
  * returns its id — used to highlight the active link in the navbar.
  */
 export function useActiveSection(sectionIds: string[]): string {
-  const [activeId, setActiveId] = useState<string>(sectionIds[0] ?? "");
+  const [activeId, setActiveId] = useState("");
 
   useEffect(() => {
     const sections = sectionIds

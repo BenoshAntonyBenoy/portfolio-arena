@@ -15,19 +15,22 @@ export function AchievementsSection({ achievements }: AchievementsSectionProps) 
     >
       <SectionHeading id="beyond-title" eyebrow={achievements.eyebrow} title={achievements.title} />
 
-      <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {achievements.items.map((item, i) => (
+      <ol className="mt-14 border-t border-line">
+        {achievements.items.map((item, index) => (
           <Reveal
             key={item.title}
-            delay={0.05 * i}
-            className="flex flex-col rounded-3xl border border-line bg-surface/40 p-6 transition-colors hover:border-accent/40"
+            as="li"
+            delay={0.04 * index}
+            className="grid gap-4 border-b border-line py-7 transition-colors hover:border-accent/45 sm:grid-cols-[120px_1fr] sm:items-start md:grid-cols-[180px_1fr] md:py-9"
           >
             <span className="font-display text-5xl tracking-tight text-accent md:text-6xl">{item.metric}</span>
-            <h3 className="mt-4 text-lg font-semibold text-cream">{item.title}</h3>
-            <p className="mt-2 text-sm leading-relaxed text-muted">{item.description}</p>
+            <div className="grid gap-2 md:grid-cols-[0.7fr_1.3fr] md:gap-10">
+              <h3 className="text-lg font-semibold text-cream md:text-xl">{item.title}</h3>
+              <p className="max-w-[58ch] text-sm leading-relaxed text-muted md:text-base">{item.description}</p>
+            </div>
           </Reveal>
         ))}
-      </div>
+      </ol>
     </section>
   );
 }

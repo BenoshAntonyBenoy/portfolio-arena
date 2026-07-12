@@ -37,6 +37,20 @@ export function AboutSection({ about, meta }: AboutSectionProps) {
               </a>
             </p>
           </Reveal>
+
+          <Reveal delay={0.14} className="mt-4 overflow-hidden rounded-2xl border border-line bg-ink/35">
+            <dl>
+              {about.facts.map((fact) => (
+                <div
+                  key={fact.label}
+                  className="grid gap-1 border-b border-line px-5 py-4 last:border-b-0 sm:grid-cols-[96px_1fr] sm:gap-4"
+                >
+                  <dt className="text-xs font-semibold uppercase tracking-[0.14em] text-accent">{fact.label}</dt>
+                  <dd className="text-sm leading-relaxed text-cream/85">{fact.value}</dd>
+                </div>
+              ))}
+            </dl>
+          </Reveal>
         </div>
 
         <div className="flex flex-col gap-6">

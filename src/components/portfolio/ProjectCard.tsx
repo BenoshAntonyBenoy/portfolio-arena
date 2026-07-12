@@ -1,5 +1,5 @@
 import type { Project } from "../../content/portfolioConfig";
-import { TiltCard } from "../ui/TiltCard";
+import { cn } from "../../utils/cn";
 
 function ArrowIcon() {
   return (
@@ -17,50 +17,83 @@ function GithubIcon() {
   );
 }
 
-/** Generated cover for projects without a preview image — keeps the grid cohesive. */
-function GeneratedCover({ project }: { project: Project }) {
-  return (
-    <div className="surface-grid relative flex h-full w-full items-center justify-center bg-gradient-to-br from-surface-2 to-ink">
-      <span className="font-display text-[clamp(72px,12vw,140px)] leading-none text-white/[0.06]" aria-hidden="true">
-        {project.index}
-      </span>
-      <span className="absolute font-display text-2xl uppercase tracking-tight text-cream/80 md:text-3xl">
-        {project.name.split(" ").slice(0, 2).join(" ")}
-      </span>
-    </div>
-  );
-}
+type ProjectCardProps = {
+  project: Project;
+  featured?: boolean;
+};
 
-export function ProjectCard({ project }: { project: Project }) {
+export function ProjectCard({ project, featured = false }: ProjectCardProps) {
+  const imageFit = project.image.fit ?? "cover";
+  const sizes = featured
+    ? "(min-width: 1024px) 62vw, 100vw"
+    : "(min-width: 1280px) 33vw, (min-width: 768px) 50vw, 100vw";
+
   return (
-    <TiltCard max={6} lift={8} className="h-full">
-      <article className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-line bg-surface/40 transition-[border-color,box-shadow] duration-300 hover:border-accent/40 hover:shadow-[0_0_0_1px_rgba(216,168,114,0.35),0_24px_55px_-30px_rgba(216,168,114,0.3),0_34px_70px_-32px_rgba(0,0,0,0.9)]">
-      <div className="relative aspect-[16/10] overflow-hidden border-b border-line bg-ink">
-        {project.image ? (
-          <img
-            src={project.image}
-            alt={`${project.name} preview`}
-            loading="lazy"
-            decoding="async"
-            className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.04]"
-          />
-        ) : (
-          <GeneratedCover project={project} />
+    <article
+      className={cn(
+        "group relative h-full overflow-hidden rounded-3xl border border-line bg-surface/45 transition-[border-color,box-shadow,transform] duration-300 hover:-translate-y-1 hover:border-accent/40 hover:shadow-[0_0_0_1px_rgba(216,168,114,0.26),0_28px_60px_-34px_rgba(216,168,114,0.36),0_34px_70px_-32px_rgba(0,0,0,0.9)]",
+        featured && "lg:grid lg:grid-cols-[1.3fr_0.7fr]",
+      )}
+    >
+      <div
+        className={cn(
+          "relative overflow-hidden border-b border-line bg-[#0d1016]",
+          featured ? "aspect-[16/10] lg:aspect-auto lg:min-h-[520px] lg:border-b-0 lg:border-r" : "aspect-[16/10]",
         )}
-        <span className="absolute left-4 top-4 rounded-full bg-ink/70 px-3 py-1 font-display text-xs tracking-widest text-cream backdrop-blur-sm">
+      >
+        <img
+          src={project.image.src}
+          srcSet={project.image.srcSet}
+          sizes={sizes}
+          alt={project.image.alt}
+          loading="lazy"
+          decoding="async"
+          className={cn(
+            "h-full w-full transition-transform duration-500 group-hover:scale-[1.025]",
+            imageFit === "contain" ? "object-contain" : "object-cover",
+          )}
+          style={{ objectPosition: project.image.position ?? "top" }}
+        />
+        <span className="absolute left-4 top-4 rounded-full border border-white/10 bg-ink/75 px-3 py-1 font-display text-xs tracking-widest text-cream backdrop-blur-sm">
           {project.index}
         </span>
       </div>
 
-      <div className="flex flex-1 flex-col p-6 md:p-7">
-        <h3 className="font-display text-2xl uppercase tracking-tight text-cream md:text-3xl">{project.name}</h3>
-        <p className="mt-3 flex-1 text-base leading-relaxed text-muted">{project.description}</p>
+      <div className={cn("flex min-w-0 flex-col p-6 md:p-7", featured && "justify-center lg:p-10")}>
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-semibold uppercase tracking-[0.16em] text-accent">
+          <span>{project.kicker}</span>
+          <span className="h-1 w-1 rounded-full bg-muted" aria-hidden="true" />
+          <span className="text-muted">{project.year}</span>
+        </div>
 
-        <ul className="mt-5 flex flex-wrap gap-2">
+        <h3
+          className={cn(
+            "mt-4 font-display uppercase leading-[0.95] tracking-tight text-cream",
+            featured ? "text-4xl md:text-5xl" : "text-2xl md:text-3xl",
+          )}
+        >
+          {project.name}
+        </h3>
+        <p className={cn("mt-4 font-medium leading-relaxed text-cream/90", featured ? "text-xl" : "text-lg")}>
+          {project.summary}
+        </p>
+        <p className="mt-3 text-sm leading-relaxed text-muted md:text-base">{project.description}</p>
+
+        {project.highlights && (
+          <ul className="mt-6 space-y-3 border-l border-accent/35 pl-4">
+            {project.highlights.map((highlight) => (
+              <li key={highlight} className="text-sm leading-relaxed text-cream/75">
+                {highlight}
+              </li>
+            ))}
+          </ul>
+        )}
+
+        <ul className="mt-6 flex flex-wrap gap-2">
           {project.tech.map((tool) => (
             <li
               key={tool}
-              className="rounded-md border border-line bg-ink/40 px-2.5 py-1 text-xs font-medium uppercase tracking-wider text-cream/70"
+              className="rounded-md border border-line bg-ink/40 px-2.5 py-1 text-[0.68rem] font-medium uppercase tracking-wider text-cream/70"
             >
               {tool}
             </li>
@@ -68,16 +101,16 @@ export function ProjectCard({ project }: { project: Project }) {
         </ul>
 
         {(project.liveUrl || project.githubUrl) && (
-          <div className="mt-6 flex items-center gap-3 border-t border-line pt-5">
+          <div className="mt-7 flex flex-wrap items-center gap-3 border-t border-line pt-5">
             {project.liveUrl && (
               <a
                 href={project.liveUrl}
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center gap-1.5 rounded-full bg-cream px-4 py-2 text-sm font-semibold text-ink transition-transform hover:-translate-y-0.5"
-                aria-label={`View ${project.name} live`}
+                aria-label={`${project.liveLabel ?? "View live project"}: ${project.name}`}
               >
-                Live <ArrowIcon />
+                {project.liveLabel ?? "View live"} <ArrowIcon />
               </a>
             )}
             {project.githubUrl && (
@@ -86,15 +119,14 @@ export function ProjectCard({ project }: { project: Project }) {
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center gap-1.5 rounded-full border border-line px-4 py-2 text-sm font-semibold text-cream transition-colors hover:bg-white/5"
-                aria-label={`View ${project.name} source on GitHub`}
+                aria-label={`${project.githubLabel ?? "View source"}: ${project.name}`}
               >
-                <GithubIcon /> Code
+                <GithubIcon /> {project.githubLabel ?? "Code"}
               </a>
             )}
           </div>
         )}
       </div>
-      </article>
-    </TiltCard>
+    </article>
   );
 }
