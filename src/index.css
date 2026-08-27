@@ -195,3 +195,28 @@ body {
   background: var(--color-accent);
   color: var(--color-ink);
 }
+
+/* Gallery lightbox. The native <dialog> supplies focus trapping and Escape;
+   this only centres it, strips the default chrome and dims what is behind. */
+.lightbox {
+  max-width: 100vw;
+  max-height: 100vh;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  overflow: visible;
+  display: grid;
+  place-items: center;
+}
+
+.lightbox::backdrop {
+  background: rgb(10 10 12 / 0.82);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.lightbox:not([open]) {
+  display: none;
+}

@@ -1,0 +1,277 @@
+/* ===========================================================================
+   The panel at /admin. Wears the site's own dark palette so the tool reads as
+   part of the same system rather than a bolted-on form.
+
+   Two rules make it safe to bundle beside the site's stylesheet.
+
+   Every selector is scoped under .admin-root. An unscoped `body { background }`
+   here would repaint the portfolio.
+
+   Every custom property is prefixed --ap-. src/index.css declares the site's
+   palette through Tailwind v4's @theme, which generates --color-ink,
+   --color-surface and friends; keeping a separate namespace means neither can
+   ever quietly redefine the other.
+   =========================================================================== */
+
+.admin-root {
+  --ap-ink: #0a0a0c;
+  --ap-surface: #131318;
+  --ap-surface-2: #1a1a21;
+  --ap-surface-3: #212129;
+  --ap-cream: #ece8e4;
+  --ap-muted: #8d8a85;
+  --ap-line: #26262d;
+  --ap-accent: #d8a872;
+  --ap-accent-soft: #e9c79b;
+  --ap-danger: #e0796b;
+  --ap-danger-soft: #2a1a18;
+  --ap-ok: #86b98a;
+  --ap-ok-soft: #16241a;
+
+  --ap-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --ap-radius: 10px;
+
+  min-height: 100vh;
+  background: var(--ap-ink);
+  color: var(--ap-cream);
+  font-family: var(--ap-sans);
+  font-size: 14px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+.admin-root *,
+.admin-root *::before,
+.admin-root *::after { box-sizing: border-box; }
+
+.admin-root button,
+.admin-root input,
+.admin-root textarea,
+.admin-root select { font: inherit; color: inherit; }
+
+/* The site puts a display face on headings. The panel is not the site. */
+.admin-root h1,
+.admin-root h2,
+.admin-root h3 {
+  font-family: var(--ap-sans);
+  font-weight: 600;
+  letter-spacing: normal;
+  margin: 0;
+}
+
+/* ---- top bar ---- */
+.admin-root .topbar {
+  position: sticky; top: 0; z-index: 20;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 12px 20px; background: rgb(10 10 12 / 0.92);
+  border-bottom: 1px solid var(--ap-line); backdrop-filter: blur(8px);
+  flex-wrap: wrap;
+}
+.admin-root .brand { display: flex; align-items: baseline; gap: 10px; }
+.admin-root .brand .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ap-accent); align-self: center; }
+.admin-root .brand .sub { color: var(--ap-muted); font-size: 12px; }
+.admin-root .actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+.admin-root button.primary {
+  background: var(--ap-accent); color: var(--ap-ink); border: 0; cursor: pointer;
+  padding: 9px 20px; border-radius: 999px; font-weight: 600;
+}
+.admin-root button.primary:hover { background: var(--ap-accent-soft); }
+.admin-root button.primary[disabled] { opacity: 0.5; cursor: default; }
+
+.admin-root .ghost {
+  background: var(--ap-surface); border: 1px solid var(--ap-line); color: var(--ap-muted);
+  padding: 8px 14px; border-radius: 999px; cursor: pointer; text-decoration: none;
+  font-size: 13px; display: inline-block;
+}
+.admin-root .ghost:hover { border-color: var(--ap-accent); color: var(--ap-cream); }
+.admin-root .ghost[disabled] { opacity: 0.5; cursor: default; }
+
+.admin-root .dirty {
+  color: var(--ap-accent); background: rgb(216 168 114 / 0.12);
+  padding: 5px 12px; border-radius: 999px; font-size: 12px;
+}
+
+/* ---- banner ---- */
+.admin-root .banner { margin: 0; padding: 12px 20px; font-size: 13px; border-bottom: 1px solid var(--ap-line); }
+.admin-root .banner.ok { background: var(--ap-ok-soft); color: var(--ap-ok); }
+.admin-root .banner.bad { background: var(--ap-danger-soft); color: var(--ap-danger); }
+.admin-root .banner ul { margin: 8px 0 0; padding-left: 20px; }
+.admin-root .banner li { margin: 2px 0; }
+
+/* ---- layout ---- */
+.admin-root .shell {
+  display: grid; grid-template-columns: 200px 1fr; gap: 28px;
+  padding: 24px 20px 80px; max-width: 1100px; margin: 0 auto;
+}
+@media (max-width: 760px) { .admin-root .shell { grid-template-columns: 1fr; gap: 16px; } }
+
+.admin-root .nav { position: sticky; top: 74px; align-self: start; display: grid; gap: 2px; }
+@media (max-width: 760px) {
+  /* Sticky is wrong on a phone: it would eat the top of a short screen. */
+  .admin-root .nav {
+    position: static; grid-auto-flow: column; grid-auto-columns: max-content;
+    overflow-x: auto; gap: 6px; padding-bottom: 4px;
+  }
+}
+.admin-root .nav button {
+  text-align: left; background: none; border: 0; cursor: pointer;
+  padding: 9px 12px; border-radius: 8px; color: var(--ap-muted); font-weight: 500;
+  white-space: nowrap;
+}
+.admin-root .nav button:hover { background: var(--ap-surface-2); color: var(--ap-cream); }
+.admin-root .nav button[aria-current="true"] { background: var(--ap-accent); color: var(--ap-ink); font-weight: 600; }
+
+.admin-root .panel { min-width: 0; }
+.admin-root .loading { color: var(--ap-muted); }
+
+.admin-root h2.section-title { margin: 0 0 4px; font-size: 20px; }
+.admin-root p.section-hint { margin: 0 0 20px; color: var(--ap-muted); font-size: 13px; max-width: 62ch; }
+
+/* ---- fields ---- */
+.admin-root .field { margin-bottom: 16px; }
+.admin-root .field > label { display: block; font-weight: 600; font-size: 12px; margin-bottom: 6px; color: var(--ap-cream); }
+.admin-root .hint { color: var(--ap-muted); font-size: 12px; margin: 5px 0 0; max-width: 62ch; }
+
+.admin-root input[type="text"],
+.admin-root input[type="password"],
+.admin-root textarea,
+.admin-root select {
+  width: 100%; padding: 9px 12px;
+  border: 1px solid var(--ap-line); border-radius: 8px;
+  background: var(--ap-surface); color: var(--ap-cream);
+}
+.admin-root textarea { min-height: 92px; resize: vertical; }
+.admin-root input:focus,
+.admin-root textarea:focus,
+.admin-root select:focus {
+  outline: 2px solid var(--ap-accent); outline-offset: 1px; border-color: transparent;
+}
+.admin-root ::placeholder { color: var(--ap-muted); }
+
+/* checkbox field */
+.admin-root .check { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 12px; cursor: pointer; }
+.admin-root .check input { width: 16px; height: 16px; accent-color: var(--ap-accent); cursor: pointer; }
+
+/* a nested object, e.g. a button's label and link */
+.admin-root .group-block {
+  border: 1px solid var(--ap-line); border-radius: var(--ap-radius);
+  padding: 14px 14px 2px; margin-bottom: 16px; background: var(--ap-surface);
+}
+.admin-root .group-label {
+  margin: 0 0 12px; font-size: 11px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.1em; color: var(--ap-muted);
+}
+
+/* ---- cards for list rows ---- */
+.admin-root .card {
+  background: var(--ap-surface); border: 1px solid var(--ap-line);
+  border-radius: var(--ap-radius); padding: 16px; margin-bottom: 12px;
+}
+.admin-root .card .group-block { background: var(--ap-surface-2); }
+.admin-root .card-head {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 10px; margin-bottom: 14px;
+}
+.admin-root .card-head strong {
+  font-size: 12px; text-transform: uppercase; letter-spacing: 0.09em; color: var(--ap-accent);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+
+.admin-root .row-tools { display: flex; gap: 6px; flex: none; }
+.admin-root .row-tools button {
+  border: 1px solid var(--ap-line); background: var(--ap-surface-2); border-radius: 7px;
+  width: 30px; height: 30px; cursor: pointer; color: var(--ap-muted); line-height: 1;
+}
+.admin-root .row-tools button:hover { border-color: var(--ap-accent); color: var(--ap-cream); }
+.admin-root .row-tools button.danger:hover { border-color: var(--ap-danger); color: var(--ap-danger); }
+.admin-root .row-tools button[disabled] { opacity: 0.3; cursor: default; }
+.admin-root .row-tools button[disabled]:hover { border-color: var(--ap-line); color: var(--ap-muted); }
+
+.admin-root .add {
+  border: 1px dashed var(--ap-line); background: var(--ap-surface-2); color: var(--ap-accent);
+  border-radius: var(--ap-radius); padding: 11px; width: 100%; cursor: pointer; font-weight: 600;
+}
+.admin-root .add:hover { border-color: var(--ap-accent); }
+
+.admin-root .sublist { margin-top: 22px; }
+.admin-root .list-label {
+  font-weight: 600; font-size: 12px; margin: 0 0 8px;
+  text-transform: uppercase; letter-spacing: 0.09em; color: var(--ap-muted);
+}
+
+/* string list rows */
+.admin-root .srow { display: flex; gap: 8px; margin-bottom: 8px; align-items: flex-start; }
+.admin-root .srow > :first-child { flex: 1; min-width: 0; }
+
+/* image / file field */
+.admin-root .media { display: flex; gap: 12px; align-items: center; }
+.admin-root .media .thumb {
+  width: 74px; height: 56px; border-radius: 8px; border: 1px solid var(--ap-line);
+  background: var(--ap-surface-2) center/cover no-repeat; flex: none;
+  display: grid; place-items: center; color: var(--ap-muted); font-size: 10px;
+  letter-spacing: 0.08em;
+}
+.admin-root .media .path { flex: 1; min-width: 0; font-size: 12px; color: var(--ap-muted); word-break: break-all; }
+
+/* ---- picker dialog ---- */
+.admin-root .picker {
+  border: 1px solid var(--ap-line); border-radius: 14px; padding: 0;
+  width: min(720px, 92vw); background: var(--ap-surface); color: var(--ap-cream);
+  box-shadow: 0 24px 70px rgb(0 0 0 / 0.55);
+}
+.admin-root .picker::backdrop { background: rgb(10 10 12 / 0.72); }
+.admin-root .picker-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 15px 18px; border-bottom: 1px solid var(--ap-line);
+}
+.admin-root .picker-body { padding: 18px; max-height: 65vh; overflow: auto; }
+
+.admin-root .upload {
+  display: block; border: 1px dashed var(--ap-line); background: var(--ap-surface-2);
+  color: var(--ap-accent); border-radius: var(--ap-radius); padding: 14px;
+  text-align: center; cursor: pointer; font-weight: 600; margin-bottom: 16px;
+}
+.admin-root .upload:hover { border-color: var(--ap-accent); }
+
+.admin-root .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); gap: 12px; }
+.admin-root .grid button {
+  border: 1px solid var(--ap-line); background: var(--ap-surface-2); border-radius: 9px;
+  padding: 8px; cursor: pointer; display: grid; gap: 6px; text-align: left;
+}
+.admin-root .grid button:hover { border-color: var(--ap-accent); }
+.admin-root .grid .ph {
+  height: 78px; border-radius: 6px; background: var(--ap-surface-3) center/cover no-repeat;
+  display: grid; place-items: center; color: var(--ap-muted); font-size: 11px; letter-spacing: 0.08em;
+}
+.admin-root .grid .nm { font-size: 11px; color: var(--ap-muted); word-break: break-all; line-height: 1.35; }
+
+.admin-root .error {
+  color: var(--ap-danger); background: var(--ap-danger-soft);
+  border: 1px solid rgb(224 121 107 / 0.25);
+  padding: 9px 12px; border-radius: 8px; font-size: 13px;
+}
+
+/* ---- sign in ----
+   The whole gate is one password box. No email field, because there is no
+   second account to tell apart, and no "forgot password", because there is no
+   inbox a reset could go to. */
+.admin-root .signin { min-height: 100vh; display: grid; place-items: center; padding: 24px; }
+.admin-root .signin-card {
+  background: var(--ap-surface); border: 1px solid var(--ap-line);
+  border-radius: 14px; padding: 28px; width: min(380px, 100%);
+}
+.admin-root .signin-card h1 { font-size: 19px; margin-bottom: 4px; }
+.admin-root .signin-card .sub { color: var(--ap-muted); font-size: 13px; margin: 0 0 22px; }
+.admin-root .signin-card label { display: block; font-weight: 600; font-size: 12px; margin-bottom: 6px; }
+.admin-root .signin-card button.primary { width: 100%; margin-top: 14px; padding: 11px 20px; }
+.admin-root .signin-card .error { margin: 14px 0 0; }
+
+/* ---- footer note ----
+   Worth saying out loud: the local panel had a Publish button that rebuilt and
+   pushed. This one writes to the database the site reads from, so the missing
+   button is otherwise the first thing anyone would ask about. */
+.admin-root .publish-note {
+  max-width: 1100px; margin: 0 auto; padding: 0 20px 48px;
+  color: var(--ap-muted); font-size: 12px;
+}

@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Portfolio Admin</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="shell">
+      <aside class="rail">
+        <div class="brand">
+          <strong>Portfolio Admin</strong>
+          <span id="brand-site">portfolio.benosh.tech</span>
+        </div>
+
+        <nav class="rail-nav" id="rail-nav" aria-label="Sections"></nav>
+
+        <div class="rail-foot">
+          <a href="http://127.0.0.1:5173" target="_blank" rel="noreferrer">Open live preview &rarr;</a>
+          <a id="live-link" href="#" target="_blank" rel="noreferrer">Open published site &rarr;</a>
+        </div>
+      </aside>
+
+      <div class="main">
+        <header class="topbar">
+          <h1 id="page-title">Projects</h1>
+          <div class="spacer"></div>
+          <span class="state" id="save-state" data-tone="idle">Loading</span>
+          <button class="btn btn-sm" id="btn-revert" title="Throw away every change made since your last publish">
+            Undo all changes
+          </button>
+          <button class="btn btn-primary" id="btn-publish">Publish</button>
+        </header>
+
+        <main class="page" id="page">
+          <div class="empty">Loading your content&hellip;</div>
+        </main>
+      </div>
+    </div>
+
+    <dialog id="publish-dialog">
+      <div class="dialog-head">
+        <h3 id="publish-title">Publish to the web</h3>
+        <p id="publish-sub">
+          Your site will be rebuilt and checked before anything goes live.
+        </p>
+      </div>
+      <div class="dialog-body" id="publish-body">
+        <div class="field">
+          <label for="publish-message">What did you change?</label>
+          <input
+            type="text"
+            id="publish-message"
+            placeholder="Added my new project"
+            maxlength="72"
+          />
+          <span class="hint">Optional. This is only a note for your own history.</span>
+        </div>
+      </div>
+      <div class="dialog-foot" id="publish-foot">
+        <button class="btn" id="publish-cancel">Cancel</button>
+        <button class="btn btn-primary" id="publish-go">Publish now</button>
+      </div>
+    </dialog>
+
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>
