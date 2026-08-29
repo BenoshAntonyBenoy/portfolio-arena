@@ -10,3 +10,6 @@ dist-ssr
 !.vscode/extensions.json
 .idea
 .claude
+
+# local preview artifacts, never shipped
+public/_*
