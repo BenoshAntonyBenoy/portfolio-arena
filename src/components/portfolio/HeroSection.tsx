@@ -11,13 +11,6 @@ type HeroSectionProps = {
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
-const chipPositions = [
-  "-left-2 top-8",
-  "-right-2 top-1/3",
-  "-left-2 bottom-24",
-  "-right-2 bottom-10",
-];
-
 export function HeroSection({ hero, meta }: HeroSectionProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const reducedMotion = usePrefersReducedMotion();
@@ -132,22 +125,21 @@ export function HeroSection({ hero, meta }: HeroSectionProps) {
           className="relative order-2 mx-auto w-full max-w-[300px] sm:max-w-[360px] lg:max-w-none"
         >
           <Cube3D size={86} className="absolute -right-5 -top-5 z-30 hidden opacity-80 xl:block" />
-          <div
-            className="absolute -inset-4 -z-10 rounded-[34px] bg-gradient-to-br from-accent/20 via-accent/5 to-transparent blur-2xl"
-            aria-hidden="true"
-          />
-          <div className="relative overflow-hidden rounded-[28px] border border-white/15 bg-surface shadow-[0_30px_70px_-20px_rgba(0,0,0,0.8),0_0_0_1px_rgba(216,168,114,0.12)]">
-            <div
-              className="pointer-events-none absolute inset-0 z-10 rounded-[28px] ring-1 ring-inset ring-accent/20"
-              aria-hidden="true"
-            />
+          {/* No frame. The portrait is a cut-out with a transparent
+              background, so everything that used to hold it had nothing left
+              to do but draw a box around thin air: the card border, the
+              surface fill, the drop shadow, the inset accent ring, and the
+              gold bloom that used to bleed out from behind the photo. */}
+          <div className="relative">
             <img
               src={meta.avatar}
               alt={`${meta.name}, ${meta.role}`}
               width={500}
               height={600}
               fetchPriority="high"
-              className="aspect-[5/6] w-full object-cover object-top"
+              /* contain, not cover: with no card behind him there is nothing to
+                 fill, and cover would crop the figure against the page. */
+              className="aspect-[5/6] w-full object-contain object-bottom"
             />
           </div>
 
@@ -161,15 +153,12 @@ export function HeroSection({ hero, meta }: HeroSectionProps) {
             </span>
           </div>
 
-          {hero.floatingTags.slice(0, 4).map((tag, index) => (
-            <span
-              key={tag}
-              className={`glass-chip absolute z-20 hidden rounded-xl px-3.5 py-2 text-xs font-semibold tracking-wide text-cream sm:block ${chipPositions[index]}`}
-              aria-hidden="true"
-            >
-              {tag}
-            </span>
-          ))}
+          {/* The floating skill chips used to sit here, four of them scattered
+              around the edges of the photo. They were positioned to land on
+              the old card's border; against a cut-out they sat on top of him
+              instead. The skills section says the same thing without covering
+              his face. `hero.floatingTags` is now unused - see the note in
+              src/admin/schema.ts. */}
         </motion.div>
       </motion.div>
     </section>

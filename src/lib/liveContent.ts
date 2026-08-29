@@ -23,7 +23,6 @@ const TOP_LEVEL_LISTS = ["nav", "socials"] as const;
 const NESTED_LISTS: [string, string][] = [
   ["hero", "nameLines"],
   ["hero", "stats"],
-  ["hero", "floatingTags"],
   ["about", "paragraphs"],
   ["about", "facts"],
   ["skills", "groups"],

@@ -158,7 +158,12 @@ export const SPEC: SectionSpec[] = [
     ],
     stringLists: [
       { key: "nameLines", label: "Name, one line per row", singular: "Line" },
-      { key: "floatingTags", label: "Floating tags around the photo", singular: "Tag" },
+      /* "floatingTags" is deliberately not listed. The chips it fed were
+         removed from the hero when the portrait became a frameless cut-out -
+         they were positioned against the old card's edge and ended up sitting
+         on his face. The data is left in the document rather than deleted, so
+         putting the chips back is a matter of restoring the markup and this
+         line. Fields absent from SPEC pass through a save untouched. */
     ],
     lists: [
       {
