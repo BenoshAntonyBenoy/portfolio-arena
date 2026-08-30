@@ -4,6 +4,7 @@ import type { NavItem, PortfolioConfig } from "../../content/portfolioConfig";
 import { useActiveSection } from "../../hooks/useActiveSection";
 import { cn } from "../../utils/cn";
 import { Logo } from "../ui/Logo";
+import { ThemeToggle } from "../ui/ThemeToggle";
 
 type NavbarProps = {
   meta: PortfolioConfig["meta"];
@@ -106,7 +107,7 @@ export function Navbar({ meta, nav, cta }: NavbarProps) {
                   {isActive && (
                     <motion.span
                       layoutId="nav-active"
-                      className="absolute inset-0 -z-10 rounded-full bg-white/5"
+                      className="absolute inset-0 -z-10 rounded-full bg-[var(--tint)]"
                       transition={{ type: "spring", stiffness: 380, damping: 32 }}
                     />
                   )}
@@ -117,6 +118,10 @@ export function Navbar({ meta, nav, cta }: NavbarProps) {
         </ul>
 
         <div className="flex items-center gap-3">
+          {/* Sits before the Résumé pill on desktop and beside the burger on
+              mobile, so on both it lands in the same corner of the shelf. */}
+          <ThemeToggle />
+
           <a
             href={cta.href}
             target={ctaIsDocument ? "_blank" : undefined}

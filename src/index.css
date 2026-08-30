@@ -17,6 +17,102 @@
   --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
 
+/* ------------------------------------------------------------------ */
+/* Theming                                                             */
+/*                                                                     */
+/* Tailwind v4 compiles `text-cream` to `color: var(--color-cream)` —  */
+/* the utilities read the tokens live rather than inlining their hex.  */
+/* So a palette swap is just a redefinition of those same variables at */
+/* a more specific selector, and every utility on the page follows.    */
+/*                                                                     */
+/* The @theme block above is untouched and remains the DARK palette:   */
+/* dark is the default and the design, not a variant. Light only ever  */
+/* applies when <html data-theme="light"> is set.                      */
+/*                                                                     */
+/* Anything below that is a raw rgba() rather than a token — grid      */
+/* lines, glass fills, the canvas accent — gets a variable here too,   */
+/* because a hardcoded white-on-black value is invisible when the      */
+/* ground turns cream.                                                 */
+/* ------------------------------------------------------------------ */
+:root {
+  --tint: rgba(255, 255, 255, 0.05);
+  --hairline: rgba(255, 255, 255, 0.1);
+  --grid-line: rgba(255, 255, 255, 0.018);
+  --veil-1: rgba(216, 168, 114, 0.08);
+  --veil-2: rgba(216, 168, 114, 0.05);
+  --chip-bg: rgba(255, 255, 255, 0.06);
+  --chip-border: rgba(255, 255, 255, 0.12);
+  --chip-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  --scroll-thumb: #34343c;
+  --scroll-thumb-hover: #45454f;
+  --card-grad: linear-gradient(135deg, rgba(19, 19, 24, 0.94), rgba(10, 10, 12, 0.88));
+  --shot-bg: #030706;
+  --cube-line: rgba(216, 168, 114, 0.4);
+  --cube-fill: rgba(216, 168, 114, 0.04);
+  --cube-text: rgba(216, 168, 114, 0.55);
+  --lightbox-backdrop: rgb(10 10 12 / 0.82);
+
+  /* Read by ScrollBackdrop's canvas, which cannot use a CSS colour. */
+  --backdrop-accent: 216, 168, 114;
+  --backdrop-boost: 1;
+}
+
+html[data-theme="light"] {
+  /* Warm off-white rather than #fff: the gold accent and the cut-out portrait
+     both sit better on a paper ground than on a clinical white one. */
+  --color-ink: #f7f4ee;
+  --color-surface: #ffffff;
+  --color-surface-2: #f1ece3;
+  /* `cream` is the ink/cream duotone's light half — it is the body text colour
+     AND the fill of the primary buttons (`bg-cream text-ink`). Inverting the
+     pair keeps those buttons correct for free: dark pill, light label. */
+  --color-cream: #16151a;
+  --color-muted: #625d56;
+  --color-line: #e2dbd0;
+  /* #d8a872 is a light gold — on cream it drops to about 1.7:1 and the role
+     line under the name becomes unreadable. This is the same hue taken down
+     to roughly 4.6:1. The logo badge keeps the original gradient: it reads as
+     a metal object, not as text. */
+  --color-accent: #9a6b2f;
+  --color-accent-soft: #b98a4a;
+
+  --tint: rgba(20, 16, 10, 0.06);
+  --hairline: rgba(20, 16, 10, 0.12);
+  /* Dark runs its grid at 0.018 white, which is barely there. Matching that
+     number on cream reads as graph paper, because dark ink on a light ground
+     carries much further than light ink on a dark one — so this is tuned by
+     eye to the same faintness, not to the same value. */
+  --grid-line: rgba(40, 30, 15, 0.032);
+  --veil-1: rgba(184, 134, 72, 0.16);
+  --veil-2: rgba(184, 134, 72, 0.1);
+  --chip-bg: rgba(255, 255, 255, 0.72);
+  --chip-border: rgba(20, 16, 10, 0.1);
+  --chip-shadow: 0 8px 24px rgba(60, 45, 25, 0.12);
+  --scroll-thumb: #cdc3b4;
+  --scroll-thumb-hover: #b6aa98;
+  --card-grad: linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(245, 240, 232, 0.9));
+  --shot-bg: #ece5d9;
+  --cube-line: rgba(150, 104, 48, 0.5);
+  --cube-fill: rgba(150, 104, 48, 0.05);
+  --cube-text: rgba(150, 104, 48, 0.7);
+  --lightbox-backdrop: rgb(60 50 35 / 0.55);
+
+  /* Gold at dark-mode alphas disappears against cream, so the constellation
+     goes a shade deeper and a third brighter to keep the same presence. */
+  --backdrop-accent: 150, 104, 48;
+  --backdrop-boost: 1.35;
+}
+
+/* Held for one frame while the palette swaps — see setTheme() in lib/theme.ts.
+   Without it every bordered, tinted and coloured element cross-fades on its
+   own schedule and the whole page smears. */
+html.theme-switching,
+html.theme-switching *,
+html.theme-switching *::before,
+html.theme-switching *::after {
+  transition: none !important;
+}
+
 html,
 body,
 #root {
@@ -58,16 +154,16 @@ body {
 
 /* Subtle, static grain/grid backdrop — no animated glow blobs. */
 .surface-grid {
-  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.018) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
+  background-image: linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
   background-size: 64px 64px;
 }
 
 /* Quiet radial vignette behind the hero — replaces the old glow animation. */
 .hero-veil {
   background:
-    radial-gradient(60% 50% at 50% 0%, rgba(216, 168, 114, 0.08) 0%, transparent 70%),
-    radial-gradient(40% 40% at 80% 20%, rgba(216, 168, 114, 0.05) 0%, transparent 70%);
+    radial-gradient(60% 50% at 50% 0%, var(--veil-1) 0%, transparent 70%),
+    radial-gradient(40% 40% at 80% 20%, var(--veil-2) 0%, transparent 70%);
 }
 
 /* ------------------------------------------------------------------ */
@@ -114,11 +210,11 @@ body {
 /* Static glass chips                                                   */
 /* ------------------------------------------------------------------ */
 .glass-chip {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: var(--chip-bg);
+  border: 1px solid var(--chip-border);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  box-shadow: var(--chip-shadow);
 }
 /* ------------------------------------------------------------------ */
 /* Tilt + glow helpers for cards                                       */
@@ -144,10 +240,10 @@ body {
   inset: 0;
   display: grid;
   place-items: center;
-  border: 1px solid rgba(216, 168, 114, 0.4);
-  background: rgba(216, 168, 114, 0.04);
+  border: 1px solid var(--cube-line);
+  background: var(--cube-fill);
   font-family: var(--font-display);
-  color: rgba(216, 168, 114, 0.55);
+  color: var(--cube-text);
 }
 @keyframes cubeSpin {
   0% {
@@ -184,11 +280,11 @@ body {
 
 ::-webkit-scrollbar-thumb {
   border-radius: 999px;
-  background: #34343c;
+  background: var(--scroll-thumb);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #45454f;
+  background: var(--scroll-thumb-hover);
 }
 
 ::selection {
@@ -212,7 +308,7 @@ body {
 }
 
 .lightbox::backdrop {
-  background: rgb(10 10 12 / 0.82);
+  background: var(--lightbox-backdrop);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
 }

@@ -5,6 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#0a0a0c" />
 
+    <!--
+      Runs before the first paint, and before the stylesheet or the bundle, so
+      the palette is decided while the page is still blank. Setting it from
+      React instead would paint dark first and flash to light on hydration.
+
+      Dark is the default: an unset visitor gets the site as designed. Only an
+      explicit stored choice moves anyone to light, so the OS preference is
+      deliberately not consulted here. Kept in sync with PAGE_GROUND and the
+      STORAGE_KEY in src/lib/theme.ts.
+    -->
+    <script>
+      (function () {
+        var theme = "dark";
+        try {
+          if (localStorage.getItem("portfolio-theme") === "light") theme = "light";
+        } catch (e) {
+          /* Storage blocked — fall through to dark. */
+        }
+        var root = document.documentElement;
+        root.dataset.theme = theme;
+        root.style.colorScheme = theme;
+        if (theme === "light") {
+          var meta = document.querySelector('meta[name="theme-color"]');
+          if (meta) meta.setAttribute("content", "#f7f4ee");
+        }
+      })();
+    </script>
+
     <title>Benosh Benoy — Software & AI Developer</title>
     <meta
       name="description"

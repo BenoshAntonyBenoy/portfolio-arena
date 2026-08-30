@@ -29,13 +29,13 @@ export function ProjectCard({ project, featured = false, reverse = false }: Proj
   return (
     <article
       className={cn(
-        "group relative overflow-hidden rounded-[32px] border border-line bg-[linear-gradient(135deg,rgba(19,19,24,0.94),rgba(10,10,12,0.88))] transition-[border-color,box-shadow,transform] duration-300 hover:-translate-y-1 hover:border-accent/45 hover:shadow-[0_0_0_1px_rgba(216,168,114,0.24),0_34px_75px_-38px_rgba(216,168,114,0.42),0_42px_90px_-40px_rgba(0,0,0,0.95)] lg:grid",
+        "group relative overflow-hidden rounded-[32px] border border-line bg-[image:var(--card-grad)] transition-[border-color,box-shadow,transform] duration-300 hover:-translate-y-1 hover:border-accent/45 hover:shadow-[0_0_0_1px_rgba(216,168,114,0.24),0_34px_75px_-38px_rgba(216,168,114,0.42),0_42px_90px_-40px_rgba(0,0,0,0.95)] lg:grid",
         reverse ? "lg:grid-cols-[0.85fr_1.15fr]" : "lg:grid-cols-[1.15fr_0.85fr]",
       )}
     >
       <div
         className={cn(
-          "relative aspect-[16/10] overflow-hidden border-b border-line bg-[#030706] lg:aspect-auto lg:min-h-[500px] lg:border-b-0",
+          "relative aspect-[16/10] overflow-hidden border-b border-line bg-[var(--shot-bg)] lg:aspect-auto lg:min-h-[500px] lg:border-b-0",
           featured && "lg:min-h-[560px]",
           reverse ? "lg:order-2 lg:border-l" : "lg:order-1 lg:border-r",
         )}
@@ -54,10 +54,10 @@ export function ProjectCard({ project, featured = false, reverse = false }: Proj
           style={{ objectPosition: project.image.position ?? "top" }}
         />
         <div
-          className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/25 via-transparent to-white/[0.025]"
+          className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/25 via-transparent to-[var(--tint)]"
           aria-hidden="true"
         />
-        <span className="absolute left-5 top-5 rounded-full border border-white/10 bg-ink/80 px-3.5 py-1.5 font-display text-xs tracking-widest text-cream backdrop-blur-sm">
+        <span className="absolute left-5 top-5 rounded-full border border-[var(--hairline)] bg-ink/80 px-3.5 py-1.5 font-display text-xs tracking-widest text-cream backdrop-blur-sm">
           {project.index}
         </span>
       </div>
@@ -130,7 +130,7 @@ export function ProjectCard({ project, featured = false, reverse = false }: Proj
                 href={project.githubUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-1.5 rounded-full border border-line px-4 py-2 text-sm font-semibold text-cream transition-colors hover:bg-white/5"
+                className="inline-flex items-center gap-1.5 rounded-full border border-line px-4 py-2 text-sm font-semibold text-cream transition-colors hover:bg-[var(--tint)]"
                 aria-label={`${project.githubLabel ?? "View source"}: ${project.name}`}
               >
                 <GithubIcon /> {project.githubLabel ?? "Code"}

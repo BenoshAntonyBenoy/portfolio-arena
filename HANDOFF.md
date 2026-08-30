@@ -58,6 +58,7 @@ read and nobody write without signing in.
 - **Reusable UI:** `src/components/ui/*` (Logo, TiltCard, Cube3D, ScrollBackdrop, Reveal, SectionHeading).
 - **The panel itself:** `src/admin/*`. It is generated from `SPEC` in `schema.ts`, so adding a field there makes it editable without touching any component.
 - **Design tokens** (colors `ink` / `cream` / `accent`, fonts) are defined in **`src/index.css`** under the Tailwind v4 `@theme` block.
+- **Light theme:** the same file, in the `html[data-theme="light"]` block below `@theme`. See the theming section under Gotchas before changing either.
 - **Static assets** (`me.jpg`, `resume.pdf`, `og-image.png`, `favicon.svg`, project images, `CNAME`, `robots.txt`, `sitemap.xml`) live in **`public/`**.
 
 ---
@@ -85,6 +86,29 @@ npm run build       # production build — MUST pass before pushing
 ## Gotchas (read before changing layout/CSS)
 
 - **Tailwind v4, not PostCSS.** Styling runs through the `@tailwindcss/vite` plugin. `vite.config.ts` sets `css: { postcss: {} }` on purpose, so Vite doesn't pick up a stray PostCSS config from a parent folder.
+- **The `@theme` block is the DARK palette, and dark is the default.** Light is not a
+  separate stylesheet: Tailwind v4 compiles `text-cream` to `color: var(--color-cream)`,
+  so `html[data-theme="light"]` just redefines those same variables and every utility on
+  the page follows. This means **never inline a raw colour in a component** — a
+  `bg-white/5` or a `#030706` is invisible or wrong the moment the ground turns cream.
+  If you need one, add a variable to both blocks in `index.css` (that is what `--tint`,
+  `--card-grad`, `--shot-bg`, `--grid-line` and friends are for).
+- **The theme is set before first paint** by a blocking script in `index.html`, reading
+  `localStorage["portfolio-theme"]`. Setting it from React instead paints dark and then
+  flashes to light. If you change the light ground colour, change it in three places:
+  that script, `PAGE_GROUND` in `src/lib/theme.ts`, and `--color-ink` in the light block.
+- **Only an explicit choice moves anyone to light** — `prefers-color-scheme` is
+  deliberately not consulted, so a first-time visitor always gets the dark design.
+- **The flip is guarded by a one-frame `.theme-switching` class** that kills every
+  transition. Without it each bordered and tinted element cross-fades on its own
+  schedule and the whole page smears. Don't "simplify" the double reflow in `setTheme`.
+- **`ScrollBackdrop` reads its colour from CSS**, not from a constant: a canvas cannot
+  take a CSS colour, so it pulls `--backdrop-accent` and `--backdrop-boost` at effect
+  setup and re-runs on a theme change. Dark's pale gold is invisible on cream, which is
+  why light supplies a deeper tone and a brightness multiplier rather than reusing it.
+- **The gold logo badge is identical in both themes** on purpose — it reads as a metal
+  object, not as text. The accent *token* does change (`#d8a872` is about 1.7:1 on cream
+  and unreadable), so don't collapse the two back together.
 - **Dark background lives on `<html>` only.** `body` and `#root` are intentionally transparent. This keeps the `-z-10` background canvas and 3D cube visible *and* prevents a white flash while scrolling. Don't move the background color onto `body`/`#root`.
 - **`ScrollBackdrop` canvas sizing:** it sizes from `window.innerWidth/innerHeight` with explicit `style.width/height`, and its `ResizeObserver` watches `document.documentElement` — **never the canvas itself** (that caused a runaway feedback loop that exploded the buffer). Keep it that way.
 - **Animations respect `prefers-reduced-motion`** via `MotionConfig` in `App.tsx` and a reduced-motion branch in `ScrollBackdrop`.

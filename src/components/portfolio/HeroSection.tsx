@@ -93,7 +93,7 @@ export function HeroSection({ hero, meta }: HeroSectionProps) {
               href={hero.secondaryCta.href}
               target={secondaryIsDocument ? "_blank" : undefined}
               rel={secondaryIsDocument ? "noreferrer" : undefined}
-              className="rounded-full border border-line px-7 py-3 text-sm font-semibold text-cream transition-colors hover:border-cream/40 hover:bg-white/5"
+              className="rounded-full border border-line px-7 py-3 text-sm font-semibold text-cream transition-colors hover:border-cream/40 hover:bg-[var(--tint)]"
             >
               {hero.secondaryCta.label}
             </a>

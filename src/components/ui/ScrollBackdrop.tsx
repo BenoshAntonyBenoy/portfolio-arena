@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { usePrefersReducedMotion } from "../../hooks/usePrefersReducedMotion";
+import { useTheme } from "../../lib/theme";
 
 /**
  * Fixed full-viewport canvas that lives behind all content. Draws a gold
@@ -14,6 +15,12 @@ import { usePrefersReducedMotion } from "../../hooks/usePrefersReducedMotion";
 export function ScrollBackdrop() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const reduced = usePrefersReducedMotion();
+  /* A canvas cannot take a CSS colour, so the accent is read out of the
+     stylesheet at setup. Depending on `theme` re-runs this effect on a flip,
+     which re-reads the variables — the gold that carries on near-black is too
+     pale to survive on cream, so light supplies a deeper tone and a brightness
+     multiplier rather than reusing the dark one. */
+  const { theme } = useTheme();
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -21,7 +28,9 @@ export function ScrollBackdrop() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    const ACCENT = "216,168,114";
+    const rootStyle = getComputedStyle(document.documentElement);
+    const ACCENT = rootStyle.getPropertyValue("--backdrop-accent").trim() || "216,168,114";
+    const BOOST = Number.parseFloat(rootStyle.getPropertyValue("--backdrop-boost")) || 1;
     let width = 0;
     let height = 0;
     let pixelRatio = 0;
@@ -84,7 +93,7 @@ export function ScrollBackdrop() {
 
       // --- central glow: grows + brightens with scroll ---
       const coreR = Math.min(width, height) * (0.14 + p * 0.55);
-      const coreA = 0.06 + p * 0.22;
+      const coreA = Math.min(1, (0.06 + p * 0.22) * BOOST);
       const glow = ctx!.createRadialGradient(cx, cy, 0, cx, cy, coreR);
       glow.addColorStop(0, `rgba(${ACCENT},${coreA})`);
       glow.addColorStop(0.6, `rgba(${ACCENT},${coreA * 0.35})`);
@@ -112,7 +121,7 @@ export function ScrollBackdrop() {
       // --- proximity lines ---
       const maxDist = 130;
       const maxDistSquared = maxDist * maxDist;
-      const lineMax = 0.09 + p * 0.4;
+      const lineMax = Math.min(1, (0.09 + p * 0.4) * BOOST);
       ctx!.lineWidth = 0.6;
       for (let i = 0; i < pts.length; i++) {
         for (let j = i + 1; j < pts.length; j++) {
@@ -131,7 +140,7 @@ export function ScrollBackdrop() {
       }
 
       // --- nodes (bubbles) ---
-      const nodeA = 0.28 + p * 0.5;
+      const nodeA = Math.min(1, (0.28 + p * 0.5) * BOOST);
       ctx!.fillStyle = `rgba(${ACCENT},${nodeA})`;
       for (const pt of pts) {
         ctx!.beginPath();
@@ -198,7 +207,7 @@ export function ScrollBackdrop() {
       }
       document.removeEventListener("visibilitychange", onVisibility);
     };
-  }, [reduced]);
+  }, [reduced, theme]);
 
   return <canvas ref={canvasRef} aria-hidden="true" className="pointer-events-none fixed inset-0 -z-10" />;
 }

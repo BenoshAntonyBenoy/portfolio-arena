@@ -34,7 +34,7 @@ export function ContactSection({ contact, meta, socials }: ContactSectionProps) 
               href={meta.resumeUrl}
               target="_blank"
               rel="noreferrer"
-              className="w-full rounded-full border border-line px-8 py-3.5 text-sm font-semibold text-cream transition-colors hover:bg-white/5 sm:w-auto"
+              className="w-full rounded-full border border-line px-8 py-3.5 text-sm font-semibold text-cream transition-colors hover:bg-[var(--tint)] sm:w-auto"
             >
               {contact.resumeLabel}
             </a>
