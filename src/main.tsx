@@ -3,10 +3,9 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App";
 
-/* Two destinations, one bundle. GitHub Pages has no rewrites, so the build
-   also writes dist/404.html as a copy of index.html - Pages serves that for
-   any unknown path, which lands here and lets the check below take over. See
-   the copy404 plugin in vite.config.ts.
+/* Two destinations, one bundle. The build emits admin/index.html so direct
+   visits and refreshes receive HTTP 200 on Pages. The 404 entry remains a
+   fallback for unknown paths. See staticEntries in vite.config.ts.
 
    No router: one extra route does not justify the dependency, and the panel is
    somewhere you go rather than a tab you flick between.
@@ -16,7 +15,7 @@ import App from "./App";
    content needs neither. */
 const AdminApp = lazy(() => import("./admin/AdminApp"));
 
-const isAdmin = /^\/admin\/?$/.test(window.location.pathname);
+const isAdmin = /^\/admin(?:\/(?:index\.html)?)?$/.test(window.location.pathname);
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
