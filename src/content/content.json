@@ -6,7 +6,7 @@
     "tagline": "Building practical software, adaptive web tools, and thoughtful interfaces.",
     "location": "Kerala, India",
     "email": "benosh.benoy2@gmail.com",
-    "resumeUrl": "/resume.pdf",
+    "resumeUrl": "https://schfjvkppaihiwwddrql.supabase.co/storage/v1/object/public/site-media/arena/documents/resume-benosh-2026-nov-1794729188276.pdf",
     "avatar": "/me.webp",
     "siteUrl": "https://portfolio.benosh.tech"
   },
@@ -38,7 +38,7 @@
   ],
   "headerCta": {
     "label": "Résumé",
-    "href": "/resume.pdf"
+    "href": "https://schfjvkppaihiwwddrql.supabase.co/storage/v1/object/public/site-media/arena/documents/resume-benosh-2026-nov-1794729188276.pdf"
   },
   "socials": [
     {
@@ -76,7 +76,7 @@
     },
     "secondaryCta": {
       "label": "View résumé",
-      "href": "/resume.pdf"
+      "href": "https://schfjvkppaihiwwddrql.supabase.co/storage/v1/object/public/site-media/arena/documents/resume-benosh-2026-nov-1794729188276.pdf"
     },
     "stats": [
       {
@@ -181,7 +181,7 @@
     ]
   },
   "projects": {
-    "eyebrow": "Six selected builds",
+    "eyebrow": "Eight selected builds",
     "title": "Work with proof.",
     "items": [
       {
@@ -214,6 +214,31 @@
       },
       {
         "index": "02",
+        "name": "StudyBuddy Matcher",
+        "kicker": "Java Matching Module",
+        "year": "2026",
+        "summary": "Study partners ranked by shared subjects and study preferences.",
+        "description": "Developed the Java matching module for a team-built Swing and MySQL application. Scores compatibility by shared subjects, semester, study time, mode and location, then ranks results using custom merge sort.",
+        "tech": [
+          "Java",
+          "Swing",
+          "MySQL",
+          "Merge Sort"
+        ],
+        "image": {
+          "src": "/projects/studybuddy-preferences.png",
+          "alt": "StudyBuddy study-preferences screen with subject selection, study time, mode and location",
+          "fit": "contain",
+          "position": "center"
+        },
+        "highlights": [
+          "Filters incomplete profiles and students with no shared subjects",
+          "Breaks score ties by shared subjects, name and student ID",
+          "Explains compatibility for each suggested study partner"
+        ]
+      },
+      {
+        "index": "03",
         "name": "Student Report Analyser",
         "kicker": "Python Desktop Tool",
         "year": "2026",
@@ -231,7 +256,34 @@
         }
       },
       {
-        "index": "03",
+        "index": "04",
+        "name": "BeMag",
+        "kicker": "Browser Arcade",
+        "year": "2026",
+        "summary": "Four playable games in one browser arcade.",
+        "description": "Built and deployed BeMag with four playable games: Emoji Bounce, Assemble, Legends Turf and Last Exit. Play directly in the browser without installing an app or signing in.",
+        "tech": [
+          "React",
+          "TypeScript",
+          "Vite",
+          "Canvas"
+        ],
+        "image": {
+          "src": "/projects/bemag-current.jpg",
+          "alt": "Current BeMag arcade showing Emoji Bounce, Assemble, Legends Turf and Last Exit",
+          "fit": "contain",
+          "position": "center"
+        },
+        "highlights": [
+          "Emoji Bounce, Assemble, Legends Turf and Last Exit",
+          "Four game routes in a single arcade deployment",
+          "Overall leaderboard in Legends Turf"
+        ],
+        "liveUrl": "https://bemag.benosh.tech/",
+        "liveLabel": "Play BeMag"
+      },
+      {
+        "index": "05",
         "name": "Personal Budget Tracker",
         "kicker": "Python Finance Tool",
         "year": "2026",
@@ -249,7 +301,7 @@
         }
       },
       {
-        "index": "04",
+        "index": "06",
         "name": "Game Store Management System",
         "kicker": "Python Desktop Program",
         "year": "2026",
@@ -267,7 +319,7 @@
         }
       },
       {
-        "index": "05",
+        "index": "07",
         "name": "Google Pay Mobile Redesign",
         "kicker": "Mobile UI Concept",
         "year": "2026",
@@ -286,7 +338,7 @@
         }
       },
       {
-        "index": "06",
+        "index": "08",
         "name": "Retail Demand Prediction",
         "kicker": "Machine Learning Notebook",
         "year": "2026",
@@ -318,9 +370,9 @@
         "description": "Built and pitched under pressure across five-plus hackathons, including a GDGC MBCET vibe-coding event."
       },
       {
-        "metric": "1st",
-        "title": "WormsWood Chess Tournament",
-        "description": "Won first place in a chess tournament through patient calculation, preparation, and composure."
+        "metric": "2x",
+        "title": "Annual Open Chess Tournament",
+        "description": "Won two editions of the annual open chess tournament hosted by MBCET, with participants from inside and outside the college."
       },
       {
         "metric": "3rd",
