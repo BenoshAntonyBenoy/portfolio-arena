@@ -142,14 +142,14 @@
         ]
       },
       {
-        "title": "Web & Product",
-        "caption": "Accessible interfaces and browser-based tools.",
+        "title": "Tools & Platforms",
+        "caption": "Tools I use to build, manage and deploy projects.",
         "items": [
-          "React",
-          "Vite",
-          "HTML & CSS",
-          "Browser APIs",
-          "Responsive UI"
+          "Supabase",
+          "Claude Code",
+          "Codex",
+          "Vercel",
+          "GitHub"
         ]
       },
       {
