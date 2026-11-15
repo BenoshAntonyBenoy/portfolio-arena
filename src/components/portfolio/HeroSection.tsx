@@ -52,7 +52,7 @@ export function HeroSection({ hero, meta }: HeroSectionProps) {
                 initial={{ opacity: 0, y: 36 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.65, ease, delay: 0.06 + index * 0.08 }}
-                className="block text-[clamp(58px,9.5vw,132px)]"
+                className="block text-[clamp(58px,9.5vw,132px)] [&+span]:mt-[0.12em]"
               >
                 {line}
               </motion.span>
