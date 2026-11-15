@@ -88,7 +88,7 @@
         "label": "Hackathons"
       },
       {
-        "value": "5",
+        "value": "4",
         "label": "Programming languages"
       }
     ],
@@ -136,8 +136,7 @@
         "caption": "Core languages used across my projects.",
         "items": [
           "Python",
-          "JavaScript",
-          "TypeScript",
+          "Java",
           "C",
           "SQL"
         ]
